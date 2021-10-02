@@ -4,7 +4,13 @@ module.exports = {
     commonjs: true,
     es2021: true,
   },
-  extends: ['plugin:@typescript-eslint/recommended', 'next/core-web-vitals', 'prettier', 'airbnb', 'next'],
+  extends: [
+    'plugin:@typescript-eslint/recommended',
+    'next/core-web-vitals',
+    'prettier',
+    'airbnb',
+    'next',
+  ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaFeatures: {
@@ -35,6 +41,17 @@ module.exports = {
 
     'import/no-duplicates': 'off',
     'object-curly-newline': 'off',
+
+    'react/require-default-props': 'off',
+    'no-undef': 'off',
+
+    'react/button-has-type': 'off',
+
+    'comma-spacing': 'off',
+
+    'operator-linebreak': 'off',
+
+    'react/jsx-one-expression-per-line': 'off',
   },
   overrides: [
     {
