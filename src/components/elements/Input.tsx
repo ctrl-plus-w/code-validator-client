@@ -11,19 +11,13 @@ import type {
 
 import clsx from 'clsx';
 
-export interface IProps {
+export interface IProps extends IDefaultInputProps {
   value: string;
   setValue: Dispatch<SetStateAction<string>>;
 
-  name: string;
-
   onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
-
   onIconClick?: (event: MouseEvent<HTMLButtonElement>) => void;
 
-  className?: string;
-
-  label?: string;
   placeholder?: string;
   icon?: ReactNode;
 
@@ -31,9 +25,7 @@ export interface IProps {
 
   maxLength?: number;
   required?: boolean;
-
   valid?: boolean;
-  disabled?: boolean;
 }
 
 const Input = ({
