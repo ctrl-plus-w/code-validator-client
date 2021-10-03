@@ -15,6 +15,7 @@ body,
   height: 100%;
 }
 
+/* LINK STYLING */
 .link {
   @apply flex items-center text-gray-800 font-semibold;
 }
@@ -38,4 +39,14 @@ body,
 
 .link:hover .link-keyword::before {
   @apply top-0 h-full rounded-sm;
+}
+
+/* FORM CONTROL STYLING */
+.form-control {
+  @apply w-full px-3 py-3 text-sm rounded-sm outline-none border border-gray-500 transition-all duration-300;
+  @apply hover:border-primary focus:border-primary focus:ring focus:ring-primary-light;
+}
+
+.form-control.invalid {
+  @apply border-red-500 !important;
 }

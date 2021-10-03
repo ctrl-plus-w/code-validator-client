@@ -15,13 +15,14 @@ export interface IProps extends IDefaultInputProps {
   value: string;
   setValue: Dispatch<SetStateAction<string>>;
 
-  onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
-  onIconClick?: (event: MouseEvent<HTMLButtonElement>) => void;
+  onChange?: (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+  onIconClick?: (event: MouseEvent<HTMLButtonElement | HTMLTextAreaElement>) => void;
 
   placeholder?: string;
   icon?: ReactNode;
 
   htmlType?: 'text' | 'password' | 'number' | 'tel';
+  textarea?: boolean;
 
   maxLength?: number;
   required?: boolean;
@@ -42,10 +43,11 @@ const Input = ({
   valid,
   disabled,
   maxLength,
+  textarea,
   required,
 }: IProps): ReactElement => {
   const handleChange = useCallback(
-    (e: ChangeEvent<HTMLInputElement>) => {
+    (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       if (onChange) {
         onChange(e);
         return;
@@ -75,20 +77,26 @@ const Input = ({
       </div>
 
       <div className="relative">
-        <input
-          type={htmlType}
-          name={name}
-          placeholder={placeholder}
-          className={clsx([
-            'w-full px-3 py-3 text-sm rounded-sm outline-none border',
-            'hover:border-primary focus:border-primary focus:ring focus:ring-primary-light',
-            'transition-all duration-300',
-            valid === false ? 'border-red-500' : 'border-gray-500',
-          ])}
-          value={value}
-          onChange={handleChange}
-          disabled={disabled}
-        />
+        {textarea ? (
+          <textarea
+            name={name}
+            placeholder={placeholder}
+            className={clsx(['form-control', valid === false && 'invalid'])}
+            value={value}
+            onChange={handleChange}
+            disabled={disabled}
+          />
+        ) : (
+          <input
+            type={htmlType}
+            name={name}
+            placeholder={placeholder}
+            className={clsx(['form-control', valid === false && 'invalid'])}
+            value={value}
+            onChange={handleChange}
+            disabled={disabled}
+          />
+        )}
 
         {icon && onIconClick ? (
           <button
