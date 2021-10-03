@@ -14,3 +14,28 @@ body,
 #__next {
   height: 100%;
 }
+
+.link {
+  @apply flex items-center text-gray-800 font-semibold;
+}
+
+.link .link-keyword {
+  @apply relative;
+}
+
+.link .link-keyword::before {
+  @apply absolute bg-primary -left-0.5 -right-0.5 h-0.5 transition-all duration-200;
+
+  z-index: -1;
+
+  content: '';
+  top: calc(100% - 2px);
+}
+
+.link:hover .link-keyword {
+  @apply text-white;
+}
+
+.link:hover .link-keyword::before {
+  @apply top-0 h-full rounded-sm;
+}
