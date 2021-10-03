@@ -1,1 +1,17 @@
-type ButtonType = 'PRIMARY' | 'BLACK' | 'WHITE' | 'DARK_GRAY' | 'GRAY' | 'SUCCESS' | 'WARNING' | 'ERROR';
+type ButtonType =
+  | 'PRIMARY'
+  | 'GHOST_PRIMARY'
+  | 'BLACK'
+  | 'GHOST_BLACK'
+  | 'WHITE'
+  | 'GHOST_WHITE'
+  | 'DARK_GRAY'
+  | 'GHOST_DARK_GRAY'
+  | 'GRAY'
+  | 'GHOST_GRAY'
+  | 'SUCCESS'
+  | 'GHOST_SUCCESS'
+  | 'WARNING'
+  | 'GHOST_WARNING'
+  | 'ERROR'
+  | 'GHOST_ERROR';
