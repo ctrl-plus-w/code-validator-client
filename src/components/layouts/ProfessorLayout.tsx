@@ -8,19 +8,21 @@ import Menu from '@module/Menu';
 interface IProps {
   className?: string;
 
+  menu?: boolean;
+
   children: ReactNode;
 }
 
-const ProfessorLayout = ({ className, children }: IProps): ReactElement => {
+const ProfessorLayout = ({ className, menu = true, children }: IProps): ReactElement => {
   return (
     <div className="w-full h-full flex flex-col">
       <Head>
         <title>Professeur</title>
       </Head>
 
-      <Menu isProfessor />
+      {menu && <Menu isProfessor />}
 
-      <div className={clsx(['w-full h-full px-12', className])}>{children}</div>
+      <div className={clsx(['w-full h-full px-12', !menu && 'py-12', className])}>{children}</div>
     </div>
   );
 };
