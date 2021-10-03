@@ -14,12 +14,14 @@ import Container from '@module/Container';
 
 import RateInput from '@element/RateInput';
 import Button from '@element/Button';
+import Input from '@element/Input';
 import Title from '@element/Title';
 import Link from '@element/Link';
 
 const Correction = (): ReactElement => {
   const [elementUsage, setElementUsage] = useState(0);
   const [cleanCode, setCleanCode] = useState(0);
+  const [note, setNote] = useState('');
 
   const str = `"""
 Programme principal
@@ -49,20 +51,20 @@ main()
 `;
 
   return (
-    <ProfessorLayout menu={false} className="flex flex-col items-start">
-      <Link href="/professor/evaluations">
-        <ChevronLeftIcon className="w-6 h-6" />
-        Quitter le mode&nbsp;<span className="link-keyword">correction</span>
-      </Link>
+    <ProfessorLayout menu={false} className="flex gap-16">
+      <Container className="w-2/5 " fullVertical col>
+        <Link href="/professor/evaluations" className="mb-8">
+          <ChevronLeftIcon className="w-6 h-6" />
+          Quitter le mode&nbsp;<span className="link-keyword">correction</span>
+        </Link>
 
-      <Container className="gap-16 overflow-hidden" row full>
-        <Container className="w-2/5 pt-8" fullVertical col>
-          <Title>John Doe</Title>
-          <Title className="mt-2" level={3}>
-            Terminale NSI
-          </Title>
+        <Title>John Doe</Title>
+        <Title className="mt-2" level={3}>
+          Terminale NSI
+        </Title>
 
-          <Container className="gap-6 mt-6" col>
+        <Container className="gap-6 mt-6" col>
+          <Container className="gap-12 flex-wrap" fullHorizontal row>
             <RateInput
               value={elementUsage}
               setValue={setElementUsage}
@@ -80,26 +82,35 @@ main()
             />
           </Container>
 
-          <Container className="mt-auto justify-between" fullHorizontal row>
-            <Button type="GHOST_PRIMARY">Évalutation précédente</Button>
-            <Button type="PRIMARY">Valider</Button>
-          </Container>
+          <Input
+            name="note"
+            label="Notes"
+            placeholder="Remarques sur le programme"
+            value={note}
+            setValue={setNote}
+            textarea
+          />
         </Container>
 
-        <Container full>
-          <SyntaxHighlighter
-            language="python"
-            style={hljsTheme}
-            customStyle={{
-              width: '100%',
-              height: '100%',
-              padding: '2rem',
-              borderRadius: '2px',
-            }}
-          >
-            {str}
-          </SyntaxHighlighter>
+        <Container className="mt-auto justify-between" fullHorizontal row>
+          <Button type="GHOST_PRIMARY">Évalutation précédente</Button>
+          <Button type="PRIMARY">Valider</Button>
         </Container>
+      </Container>
+
+      <Container className="w-3/5" full>
+        <SyntaxHighlighter
+          language="python"
+          style={hljsTheme}
+          customStyle={{
+            width: '100%',
+            height: '100%',
+            padding: '2rem',
+            borderRadius: '2px',
+          }}
+        >
+          {str}
+        </SyntaxHighlighter>
       </Container>
     </ProfessorLayout>
   );
