@@ -7,13 +7,15 @@ interface IProps {
   href: string;
   children: ReactNode;
 
+  styled?: boolean;
+
   className?: string;
 }
 
-const Link = ({ className, href, children }: IProps): ReactElement => {
+const Link = ({ className, href, children, styled = true }: IProps): ReactElement => {
   return (
     <NextLink href={href} passHref>
-      <a href="replace" className={clsx(['link', className])}>
+      <a href="replace" className={clsx(['link', styled && 'styled-link', className])}>
         {children}
       </a>
     </NextLink>
