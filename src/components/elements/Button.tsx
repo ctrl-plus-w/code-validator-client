@@ -49,6 +49,12 @@ const Button = ({
       case 'GHOST_PRIMARY':
         return 'text-primary bg-white hover:text-purple-500';
 
+      case 'SUCCESS':
+        return 'text-white bg-green-600 hover:bg-green-500';
+
+      case 'GHOST_SUCCESS':
+        return 'text-green-600 bg-white hover:text-green-500';
+
       default:
         return 'text-white bg-black hover:bg-gray-900';
     }
