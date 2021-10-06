@@ -52,6 +52,8 @@ module.exports = {
     'operator-linebreak': 'off',
 
     'react/jsx-one-expression-per-line': 'off',
+
+    'import/extensions': 'off',
   },
   overrides: [
     {
