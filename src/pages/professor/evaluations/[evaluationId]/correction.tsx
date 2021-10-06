@@ -17,8 +17,13 @@ import Button from '@element/Button';
 import Input from '@element/Input';
 import Title from '@element/Title';
 import Link from '@element/Link';
+import { useRouter } from 'next/router';
 
 const Correction = (): ReactElement => {
+  const router = useRouter();
+
+  const { evaluationId } = router.query;
+
   const [elementUsage, setElementUsage] = useState(0);
   const [cleanCode, setCleanCode] = useState(0);
   const [note, setNote] = useState('');
@@ -53,7 +58,7 @@ main()
   return (
     <ProfessorLayout menu={false} className="flex gap-16">
       <Container className="w-2/5 " fullVertical col>
-        <Link href="/professor/evaluations" className="mb-8">
+        <Link href={`/professor/evaluations/${evaluationId}`} className="mb-8">
           <ChevronLeftIcon className="w-6 h-6" />
           Quitter le mode&nbsp;<span className="link-keyword">correction</span>
         </Link>
