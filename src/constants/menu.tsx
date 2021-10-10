@@ -15,7 +15,7 @@ const MENU: IMenu = {
     baseUrl: '/student',
     paths: {
       home: {
-        pathname: '/student/home',
+        pathname: '/student',
         title: 'Accueil',
       },
       evaluations: {
@@ -28,7 +28,7 @@ const MENU: IMenu = {
     baseUrl: '/professor',
     paths: {
       home: {
-        pathname: '/professor/home',
+        pathname: '/professor',
         title: 'Accueil ',
       },
       evaluations: {

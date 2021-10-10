@@ -24,6 +24,13 @@ const Menu = ({ className, isProfessor }: IProps): ReactElement => {
     // TODO : Make the logout computations.
   };
 
+  const isActive = (pathname: string): boolean => {
+    if (router.pathname === pathname && pathname === roleMenu.baseUrl) return true;
+    if (router.pathname.startsWith(pathname) && pathname !== roleMenu.baseUrl) return true;
+
+    return false;
+  };
+
   return (
     <nav className={clsx(['flex flex-row w-full items-center justify-between p-12', className])}>
       <div>
@@ -37,7 +44,7 @@ const Menu = ({ className, isProfessor }: IProps): ReactElement => {
           if (!title) return null;
 
           return (
-            <li className={clsx(router.pathname.startsWith(pathname) && 'font-semibold text-primary')} key={uuidv4()}>
+            <li className={clsx(isActive(pathname) && 'font-semibold text-primary')} key={uuidv4()}>
               <Link href={pathname} passHref>
                 <a href="replace">{title}</a>
               </Link>
