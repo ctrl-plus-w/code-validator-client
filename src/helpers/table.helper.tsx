@@ -10,8 +10,8 @@ import { ellipsis, genderMapper } from '@util/string.util';
 export const evaluationMapper = (evaluation: IEvaluation): ReactElement | string => {
   return (
     <>
-      <Text className="text-black">{ellipsis(evaluation.title, 30)}</Text>
-      <Text className="text-gray-600">{ellipsis(evaluation.description, 30)}</Text>
+      <Text type="BLACK">{ellipsis(evaluation.title, 30)}</Text>
+      <Text type="GRAY">{ellipsis(evaluation.description, 30)}</Text>
     </>
   );
 };
@@ -22,9 +22,9 @@ export const deadlineMapper = (evaluation: IEvaluation): ReactElement | string =
       <Text>{evaluation.deadline.toLocaleDateString()}</Text>
       <div className="flex items-center gap-2">
         <Loader value={evaluation.completedUsers} max={evaluation.totalUsers} />
-        <p className="text-gray-600">
+        <Text type="GRAY">
           {evaluation.completedUsers} / {evaluation.totalUsers} rendus
-        </p>
+        </Text>
       </div>
     </>
   );
@@ -33,8 +33,8 @@ export const deadlineMapper = (evaluation: IEvaluation): ReactElement | string =
 export const userMapper = (user: IUser): ReactElement | string => {
   return (
     <>
-      <Text className="text-black">{ellipsis(user.name, 30)}</Text>
-      <Text className="text-gray-600">{ellipsis(genderMapper(user.gender), 30)}</Text>
+      <Text type="BLACK">{ellipsis(user.name, 30)}</Text>
+      <Text type="GRAY">{ellipsis(genderMapper(user.gender), 30)}</Text>
     </>
   );
 };
