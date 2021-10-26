@@ -22,7 +22,7 @@ import Title from '@element/Title';
 import { statusMapper, userMapper } from '@helper/table.helper';
 
 import { formatNumber } from '@util/string.util';
-import { formatDatetime } from '@util/date.util';
+import { formatInputDatetime } from '@util/date.util';
 
 import hljsTheme from '@style/hljs';
 
@@ -100,7 +100,7 @@ const Students = ({ evaluation }: ISubMenuProps) => {
     return (
       <>
         <p className="text-black">
-          {user.returned ? formatDatetime(user.returned, '/') : 'Non rendu'}
+          {user.returned ? formatInputDatetime(user.returned, '/') : 'Non rendu'}
         </p>
         <div className="flex items-center gap-2">
           <Loader value={user.note || 0} max={evaluation.maxNote} />
