@@ -3,7 +3,7 @@ import { ReactElement, ReactNode, useCallback } from 'react';
 import clsx from 'clsx';
 
 interface IProps {
-  type?: 'BLACK' | 'GRAY' | 'DARK_GRAY';
+  type?: 'BLACK' | 'GRAY' | 'DARK_GRAY' | 'SUCCESS' | 'SUCCESS_LIGHT';
 
   children?: ReactNode;
   className?: string;
@@ -20,6 +20,12 @@ const Text = ({ type, className, children }: IProps): ReactElement => {
 
       case 'GRAY':
         return 'text-gray-700';
+
+      case 'SUCCESS':
+        return 'text-green-600';
+
+      case 'SUCCESS_LIGHT':
+        return 'text-green-300';
 
       default:
         return 'text-black';
