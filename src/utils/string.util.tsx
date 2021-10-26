@@ -45,6 +45,15 @@ export const genderMapper = (gender: 'male' | 'female'): 'Homme' | 'Femme' => {
 };
 
 /**
+ * Check if the string is empty or not
+ * @param str The string to check
+ * @returns A boolean
+ */
+export const isEmpty = (str: string): boolean => {
+  return str.trim() === '';
+};
+
+/**
  * Capitalize the string
  * @param str The string to capitalize
  * @returns A string
