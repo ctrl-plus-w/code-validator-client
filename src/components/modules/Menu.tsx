@@ -54,9 +54,11 @@ const Menu = ({ className, isProfessor }: IProps): ReactElement => {
       </ul>
 
       <div className="flex gap-8">
-        <Button type="PRIMARY" href={roleMenu.paths.createEvaluation.pathname}>
-          Évaluation
-        </Button>
+        {isProfessor && (
+          <Button type="PRIMARY" href={roleMenu.paths.createEvaluation.pathname}>
+            Évaluation
+          </Button>
+        )}
 
         <button type="button" onClick={onLogout}>
           <p className="text-gray-800 font-semibold cursor-pointer">Se déconnecter</p>
