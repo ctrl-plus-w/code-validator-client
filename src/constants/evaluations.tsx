@@ -160,8 +160,8 @@ def message_note(nb):
     infos: {
       ...lukas,
       returned: new Date(2021, 9, 11, 15, 30),
-      note: null,
-      status: 'todo',
+      note: 15,
+      status: 'done',
     },
   },
   {
@@ -183,9 +183,9 @@ Total TTC           20%              1.74 €`,
     owner: john,
     infos: {
       ...lukas,
-      returned: new Date(2021, 9, 11, 15, 30),
+      returned: null,
       note: null,
-      status: 'todo',
+      status: 'waiting',
     },
   },
   {
