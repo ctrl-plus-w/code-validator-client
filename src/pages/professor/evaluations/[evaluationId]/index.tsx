@@ -5,8 +5,6 @@ import { NextPage } from 'next';
 
 import type { ReactElement } from 'react';
 
-import SyntaxHighlighter from 'react-syntax-highlighter';
-import ReactMarkdown from 'react-markdown';
 import clsx from 'clsx';
 
 import ProfessorLayout from '@layout/ProfessorLayout';
@@ -25,9 +23,8 @@ import { statusMapper, userMapper } from '@helper/table.helper';
 import { formatNumber } from '@util/string.util';
 import { formatInputDatetime } from '@util/date.util';
 
-import hljsTheme from '@style/hljs';
-
 import { professorEvaluations } from '@constant/evaluations';
+import Markdown from '@module/Markdown';
 
 // eslint-disable-next-line no-shadow
 enum SUB_MENU {
@@ -43,34 +40,7 @@ interface ISubMenuProps {
 const Subject = ({ evaluation }: ISubMenuProps): ReactElement => {
   return (
     <Container>
-      <ReactMarkdown
-        className="flex-col"
-        components={{
-          code: ({ inline, className, children, ...props }) => {
-            const match = /language-(\w+)/.exec(className || '');
-            return !inline && match ? (
-              <SyntaxHighlighter
-                style={hljsTheme}
-                customStyle={{
-                  marginTop: '2rem',
-                  padding: '1rem',
-                  borderRadius: '2px',
-                }}
-                language={match[1]}
-                PreTag="div"
-              >
-                {String(children).replace(/\n$/, '')}
-              </SyntaxHighlighter>
-            ) : (
-              <code className={className} {...props}>
-                {children}
-              </code>
-            );
-          },
-        }}
-      >
-        {evaluation.description}
-      </ReactMarkdown>
+      <Markdown content={evaluation.description} />
     </Container>
   );
 };
