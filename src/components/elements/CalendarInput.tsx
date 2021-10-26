@@ -2,7 +2,7 @@ import type { Dispatch, ReactElement, SetStateAction } from 'react';
 
 import clsx from 'clsx';
 
-import formatDate from '@util/date.util';
+import { formatInputDate } from '@util/date.util';
 
 interface IProps extends IDefaultInputProps {
   value: Date;
@@ -25,6 +25,11 @@ const CalendarInput = ({
   disabled,
   label,
 }: IProps): ReactElement => {
+  const getDateFromValue = (val: string): Date => {
+    const [year, month, date] = val.split('-');
+    return new Date(parseInt(year, 10), parseInt(month, 10), parseInt(date, 10));
+  };
+
   return (
     <label className={clsx(['flex flex-col gap-2', className])} htmlFor={name}>
       <div className="flex justify-between items-center">
@@ -38,8 +43,8 @@ const CalendarInput = ({
         type="date"
         name={name}
         placeholder={placeholder}
-        value={formatDate(value)}
-        onChange={(e) => setValue(new Date(e.target.value))}
+        value={formatInputDate(value)}
+        onChange={(e) => setValue(getDateFromValue(e.target.value))}
         disabled={disabled}
         className="form-control"
       />
