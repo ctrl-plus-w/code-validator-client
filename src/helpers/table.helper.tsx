@@ -6,6 +6,7 @@ import Loader from '@element/Loader';
 import Text from '@element/Text';
 
 import { ellipsis, genderMapper } from '@util/string.util';
+import { formatDate } from '@util/date.util';
 
 export const evaluationMapper = (
   evaluation: IEvaluation | IStudentEvaluation | IProfessorEvaluation,
@@ -68,6 +69,43 @@ export const statusMapper = (user: IEvaluationUser): ReactElement | string => {
       )}
     </div>
   );
+};
+
+export const studentDeadlineMapper = (evaluation: IStudentEvaluation): ReactElement | string => {
+  return (
+    <>
+      <Text>{formatDate(evaluation.deadline)}</Text>
+
+      <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1">
+          {evaluation.infos.status === 'done' && (
+            <>
+              <CheckCircleIcon className="w-4 h-4 text-green-600" />
+              <Text>Rendu, validé</Text>
+            </>
+          )}
+
+          {evaluation.infos.status === 'todo' && (
+            <>
+              <MinusCircleIcon className="w-4 h-4 text-yellow-500" />
+              <Text>Rendu, en attente</Text>
+            </>
+          )}
+
+          {evaluation.infos.status === 'waiting' && (
+            <>
+              <XCircleIcon className="w-4 h-4 text-red-600" />
+              <Text>Non rendu</Text>
+            </>
+          )}
+        </div>
+      </div>
+    </>
+  );
+};
+
+export const professorMapper = (evaluation: IEvaluation): ReactElement | string => {
+  return `${evaluation.owner.gender === 'male' ? 'Mr.' : 'Mme.'} ${evaluation.owner.surname}`;
 };
 
 export const groupMapper = (evaluation: IEvaluation): ReactElement | string => {
