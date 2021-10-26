@@ -23,6 +23,7 @@ export interface IProps extends IDefaultInputProps {
 
   htmlType?: 'text' | 'password' | 'number' | 'tel';
   textarea?: boolean;
+  fullHeightTextarea?: boolean;
 
   maxLength?: number;
   required?: boolean;
@@ -45,6 +46,7 @@ const Input = ({
   maxLength,
   textarea,
   required,
+  fullHeightTextarea,
 }: IProps): ReactElement => {
   const handleChange = useCallback(
     (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -62,7 +64,10 @@ const Input = ({
   );
 
   return (
-    <label className={clsx(['flex flex-col gap-2', className])} htmlFor={name}>
+    <label
+      className={clsx(['flex flex-col gap-2', fullHeightTextarea && 'h-full', className])}
+      htmlFor={name}
+    >
       <div className="flex justify-between items-center">
         <p className="text-base font-medium">
           {label && <span className="text-black">{label}</span>}
@@ -76,12 +81,16 @@ const Input = ({
         )}
       </div>
 
-      <div className="relative">
+      <div className={clsx(['relative', fullHeightTextarea && 'h-full'])}>
         {textarea ? (
           <textarea
             name={name}
             placeholder={placeholder}
-            className={clsx(['form-control', valid === false && 'invalid'])}
+            className={clsx([
+              'form-control',
+              fullHeightTextarea && 'h-full',
+              valid === false && 'invalid',
+            ])}
             value={value}
             onChange={handleChange}
             disabled={disabled}
