@@ -6,9 +6,9 @@ import Table from '@module/Table';
 
 import Title from '@element/Title';
 
-import { deadlineMapper, evaluationMapper, groupMapper } from '@helper/table.helper';
+import { professorDeadlineMapper, evaluationMapper, groupMapper } from '@helper/table.helper';
 
-import evaluations from '@constant/evaluations';
+import { professorEvaluations } from '@constant/evaluations';
 
 const Home: NextPage = () => {
   return (
@@ -18,12 +18,12 @@ const Home: NextPage = () => {
         Comment allez vous ?
       </Title>
 
-      <Table<IEvaluation>
+      <Table<IProfessorEvaluation>
         className="mt-8"
-        data={evaluations}
+        data={professorEvaluations}
         config={[
           { name: 'Évaluation', mapper: evaluationMapper },
-          { name: 'Pour le', mapper: deadlineMapper },
+          { name: 'Pour le', mapper: professorDeadlineMapper },
           { name: 'Groupe', mapper: groupMapper },
         ]}
       />

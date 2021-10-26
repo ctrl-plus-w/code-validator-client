@@ -26,6 +26,13 @@ export const robinson: IUser = {
   gender: 'male',
 };
 
-const users = [lukas, rose, robinson, emma];
+export const john: IUser = {
+  name: 'John',
+  surname: 'Doe',
+  username: 'jdoe',
+  gender: 'male',
+};
+
+const users = [lukas, rose, robinson, emma, john];
 
 export default users;

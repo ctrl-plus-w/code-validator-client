@@ -18,6 +18,7 @@ import CalendarInput from '@element/CalendarInput';
 import Button from '@element/Button';
 import Loader from '@element/Loader';
 import Title from '@element/Title';
+import Link from '@element/Link';
 
 import { statusMapper, userMapper } from '@helper/table.helper';
 
@@ -26,8 +27,7 @@ import { formatInputDatetime } from '@util/date.util';
 
 import hljsTheme from '@style/hljs';
 
-import evaluations from '@constant/evaluations';
-import Link from '@element/Link';
+import { professorEvaluations } from '@constant/evaluations';
 
 // eslint-disable-next-line no-shadow
 enum SUB_MENU {
@@ -37,7 +37,7 @@ enum SUB_MENU {
 }
 
 interface ISubMenuProps {
-  evaluation: IEvaluation;
+  evaluation: IProfessorEvaluation;
 }
 
 const Subject = ({ evaluation }: ISubMenuProps): ReactElement => {
@@ -134,7 +134,7 @@ const Evaluation: NextPage = () => {
 
   const { evaluationId } = router.query;
 
-  const [evaluation] = useState(evaluations[0]);
+  const [evaluation] = useState(professorEvaluations[0]);
   const [subMenu, setSubMenu] = useState(SUB_MENU.SUBJECT);
 
   return (

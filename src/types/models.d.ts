@@ -21,12 +21,20 @@ interface IEvaluation {
   title: string;
   description: string;
   deadline: Date;
-  totalUsers: number;
-  completedUsers: number;
-  maxNote: numbers;
   group: {
     name: string;
     slug: string;
   };
+  owner: IUser;
+}
+
+interface IProfessorEvaluation extends IEvaluation {
+  totalUsers: number;
+  completedUsers: number;
   users: IEvaluationUser[];
+  maxNote: numbers;
+}
+
+interface IStudentEvaluation extends IEvaluation {
+  infos: IEvaluationUser;
 }

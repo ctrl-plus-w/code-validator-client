@@ -7,7 +7,9 @@ import Text from '@element/Text';
 
 import { ellipsis, genderMapper } from '@util/string.util';
 
-export const evaluationMapper = (evaluation: IEvaluation): ReactElement | string => {
+export const evaluationMapper = (
+  evaluation: IEvaluation | IStudentEvaluation | IProfessorEvaluation,
+): ReactElement | string => {
   return (
     <>
       <Text type="BLACK">{ellipsis(evaluation.title, 30)}</Text>
@@ -16,7 +18,9 @@ export const evaluationMapper = (evaluation: IEvaluation): ReactElement | string
   );
 };
 
-export const deadlineMapper = (evaluation: IEvaluation): ReactElement | string => {
+export const professorDeadlineMapper = (
+  evaluation: IProfessorEvaluation,
+): ReactElement | string => {
   return (
     <>
       <Text>{evaluation.deadline.toLocaleDateString()}</Text>

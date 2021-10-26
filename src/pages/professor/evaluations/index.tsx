@@ -10,10 +10,10 @@ import Link from '@element/Link';
 
 import useArray from '@hook/useArray';
 
-import { deadlineMapper, evaluationMapper, groupMapper } from '@helper/table.helper';
+import { professorDeadlineMapper, evaluationMapper, groupMapper } from '@helper/table.helper';
 import { mapSearchField, validSearchField } from '@helper/form.helper';
 
-import evaluations from '@constant/evaluations';
+import { professorEvaluations } from '@constant/evaluations';
 
 const Evaluations: NextPage = () => {
   const {
@@ -42,12 +42,12 @@ const Evaluations: NextPage = () => {
         className="mt-8 w-full"
       />
 
-      <Table<IEvaluation>
+      <Table<IProfessorEvaluation>
         className="mt-8 w-full"
-        data={evaluations}
+        data={professorEvaluations}
         config={[
           { name: 'Évaluation', mapper: evaluationMapper },
-          { name: 'Pour le', mapper: deadlineMapper },
+          { name: 'Pour le', mapper: professorDeadlineMapper },
           { name: 'Groupe', mapper: groupMapper },
         ]}
       />
