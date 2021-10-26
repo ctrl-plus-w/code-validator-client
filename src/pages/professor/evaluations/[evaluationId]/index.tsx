@@ -27,6 +27,7 @@ import { formatDatetime } from '@util/date.util';
 import hljsTheme from '@style/hljs';
 
 import evaluations from '@constant/evaluations';
+import Link from '@element/Link';
 
 // eslint-disable-next-line no-shadow
 enum SUB_MENU {
@@ -146,9 +147,11 @@ const Evaluation: NextPage = () => {
           </Button>
         </Container>
 
-        <Title className="mt-2" level={3}>
-          Informations générales
-        </Title>
+        <Link href="/professor/evaluations" className="mt-2">
+          <Title level={3}>
+            Retourner aux <span className="link-keyword">évaluations</span>
+          </Title>
+        </Link>
 
         <Container className="gap-16 mt-10 mb-6" row>
           {Object.values(SUB_MENU).map((name) => (
