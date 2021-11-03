@@ -14,7 +14,7 @@ interface IProps {
 
 const StudentLayout = ({ className, children }: IProps): ReactElement => {
   return (
-    <div className="w-full h-full flex flex-col">
+    <div className="flex flex-col">
       <Head>
         <title>Élève</title>
       </Head>
