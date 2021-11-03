@@ -15,6 +15,7 @@ interface IEvaluationUser extends IUser {
   returned: Date | null;
   note: number | null;
   status: 'waiting' | 'done' | 'todo';
+  answer: string | null;
 }
 
 interface IEvaluation {

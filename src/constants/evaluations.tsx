@@ -37,18 +37,21 @@ def message_note(nb):
         returned: new Date(2021, 9, 11, 15, 30),
         note: null,
         status: 'todo',
+        answer: null,
       },
       {
         ...robinson,
         returned: new Date(2021, 9, 11, 6, 25),
         note: 15,
         status: 'done',
+        answer: null,
       },
       {
         ...rose,
         returned: null,
         note: null,
         status: 'waiting',
+        answer: null,
       },
     ],
   },
@@ -78,18 +81,21 @@ Total TTC           20%              1.74 €`,
         returned: new Date(2021, 9, 11, 15, 30),
         note: null,
         status: 'todo',
+        answer: null,
       },
       {
         ...robinson,
         returned: new Date(2021, 9, 11, 6, 25),
         note: 15,
         status: 'done',
+        answer: null,
       },
       {
         ...rose,
         returned: null,
         note: null,
         status: 'waiting',
+        answer: null,
       },
     ],
   },
@@ -112,18 +118,21 @@ b) Écrire un programme qui affiche les entiers impairs de 20 à 0`,
         returned: new Date(2021, 9, 11, 15, 30),
         note: null,
         status: 'todo',
+        answer: null,
       },
       {
         ...robinson,
         returned: new Date(2021, 9, 11, 6, 25),
         note: 15,
         status: 'done',
+        answer: null,
       },
       {
         ...rose,
         returned: null,
         note: null,
         status: 'waiting',
+        answer: null,
       },
     ],
   },
@@ -162,6 +171,31 @@ def message_note(nb):
       returned: new Date(2021, 9, 11, 15, 30),
       note: 15,
       status: 'done',
+      answer: `"""Programme principal
+On demande les nombres minimums et maximums puis on affiche les carrés des nombres compris
+entre eux.
+"""
+def main():
+  min_user_input = int(input('Entrez un entier : '))
+  max_user_input = int(input('Entrez un entier plus grand : '))
+
+  # Si le nombre le plus petit est plus grand que le plus grand, on affiche une
+  # erreur et on quitte le programme
+  if min_user_input >= max_user_input:
+    print('Ce n\\'est pas un entier plus grand !')
+    return
+  
+  # Affiche les carrés
+  # On ajoute un car la boucle va jusqu'à n - 1
+  for i in range(min_user_input, max_user_input + 1):
+    print(i ** 2, endl="")   
+
+
+"""
+On exécute le programme principal
+"""
+main()
+`,
     },
   },
   {
@@ -186,6 +220,7 @@ Total TTC           20%              1.74 €`,
       returned: null,
       note: null,
       status: 'waiting',
+      answer: null,
     },
   },
   {
@@ -203,6 +238,31 @@ b) Écrire un programme qui affiche les entiers impairs de 20 à 0`,
       returned: new Date(2021, 9, 11, 15, 30),
       note: null,
       status: 'todo',
+      answer: `"""Programme principal
+On demande les nombres minimums et maximums puis on affiche les carrés des nombres compris
+entre eux.
+"""
+def main():
+  min_user_input = int(input('Entrez un entier : '))
+  max_user_input = int(input('Entrez un entier plus grand : '))
+
+  # Si le nombre le plus petit est plus grand que le plus grand, on affiche une
+  # erreur et on quitte le programme
+  if min_user_input >= max_user_input:
+    print('Ce n\\'est pas un entier plus grand !')
+    return
+  
+  # Affiche les carrés
+  # On ajoute un car la boucle va jusqu'à n - 1
+  for i in range(min_user_input, max_user_input + 1):
+    print(i ** 2, endl="")   
+
+
+"""
+On exécute le programme principal
+"""
+main()
+`,
     },
   },
 ];
