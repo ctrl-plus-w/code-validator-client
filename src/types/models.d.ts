@@ -16,6 +16,10 @@ interface IEvaluationUser extends IUser {
   note: number | null;
   status: 'waiting' | 'done' | 'todo';
   answer: string | null;
+  elementUsageNote: number | null;
+  cleanlinessNote: number | null;
+  unitTestNote: number | null;
+  remark: string | null;
 }
 
 interface IEvaluation {
