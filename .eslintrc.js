@@ -55,7 +55,7 @@ module.exports = {
 
     'import/extensions': 'off',
 
-    'linebreak-style': [2, 'windows'],
+    'linebreak-style': [2, 'unix'],
   },
   overrides: [
     {
