@@ -1,24 +1,75 @@
-import { useState } from 'react';
+import { gql, useMutation } from '@apollo/client';
+import { useEffect, useState } from 'react';
 
 import type { NextPage } from 'next';
 import type { FormEvent } from 'react';
 
+import Router from 'next/router';
 import Head from 'next/head';
 
+import PasswordInput from '@element/PasswordInput';
 import Button from '@element/Button';
 import Input from '@element/Input';
 import Title from '@element/Title';
-import PasswordInput from '@element/PasswordInput';
+
+import useAuthentication from '@hook/useAuthentication';
+
+import { getPathFromRole } from '@util/transcript.utils';
+
+const LOGIN = gql`
+  mutation Mutation($input: LoginInput!) {
+    login(input: $input) {
+      id
+      username
+      token
+      firstName
+      lastName
+      role {
+        id
+        name
+        slug
+      }
+    }
+  }
+`;
 
 const Home: NextPage = () => {
+  const { login, loggedIn, role, loading } = useAuthentication();
+
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleSubmit = (e: FormEvent): void => {
+  const [error, setError] = useState(false);
+
+  const [loginMutation] = useMutation(LOGIN);
+
+  useEffect(() => {
+    setError(false);
+  }, [username, password]);
+
+  const handleSubmit = async (e: FormEvent): Promise<void> => {
     e.preventDefault();
 
-    // TODO : Make the handle submit computations.
+    const variables = { input: { username, password } };
+
+    try {
+      const { data } = await loginMutation({ variables });
+      if (!data.login) return;
+
+      await login(data.login);
+      Router.push(getPathFromRole(data.login.role));
+    } catch (err) {
+      setError(true);
+    }
   };
+
+  useEffect(() => {
+    Router.push(getPathFromRole(role));
+  }, [role, loggedIn]);
+
+  if (loading) {
+    return <div />;
+  }
 
   return (
     <div className="w-full h-full flex items-center justify-center">
@@ -43,6 +94,7 @@ const Home: NextPage = () => {
           placeholder="jdoe"
           className="w-full"
           maxLength={20}
+          valid={!error}
           required
         />
 
@@ -54,6 +106,8 @@ const Home: NextPage = () => {
           placeholder="*****"
           htmlType="password"
           className="w-full"
+          valid={!error}
+          required
         />
 
         <Button htmlType="submit" className="mt-2">

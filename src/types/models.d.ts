@@ -4,8 +4,8 @@ interface IRole {
 }
 
 interface IUser {
-  name: string;
-  surname: string;
+  firstName: string;
+  lastName: string;
   username: string;
   gender: 'male' | 'female';
   role?: IRole;
@@ -24,20 +24,19 @@ interface IEvaluationUser extends IUser {
 
 interface IEvaluation {
   title: string;
-  description: string;
+  subject: string;
   deadline: Date;
   group: {
     name: string;
     slug: string;
   };
-  owner: IUser;
+  user: IUser;
 }
 
 interface IProfessorEvaluation extends IEvaluation {
   totalUsers: number;
   completedUsers: number;
-  users: IEvaluationUser[];
-  maxNote: numbers;
+  maxNote: number;
 }
 
 interface IStudentEvaluation extends IEvaluation {

@@ -14,7 +14,7 @@ export const evaluationMapper = (
   return (
     <>
       <Text type="BLACK">{ellipsis(evaluation.title, 30)}</Text>
-      <Text type="GRAY">{ellipsis(evaluation.description, 30)}</Text>
+      <Text type="GRAY">{ellipsis(evaluation.subject, 30)}</Text>
     </>
   );
 };
@@ -38,7 +38,7 @@ export const professorDeadlineMapper = (
 export const userMapper = (user: IUser): ReactElement | string => {
   return (
     <>
-      <Text type="BLACK">{ellipsis(user.name, 30)}</Text>
+      <Text type="BLACK">{ellipsis(user.firstName, 30)}</Text>
       <Text type="GRAY">{ellipsis(genderMapper(user.gender), 30)}</Text>
     </>
   );
@@ -105,9 +105,16 @@ export const studentDeadlineMapper = (evaluation: IStudentEvaluation): ReactElem
 };
 
 export const professorMapper = (evaluation: IEvaluation): ReactElement | string => {
-  return `${evaluation.owner.gender === 'male' ? 'Mr.' : 'Mme.'} ${evaluation.owner.surname}`;
+  return `${evaluation.user.gender === 'male' ? 'Mr.' : 'Mme.'} ${evaluation.user.lastName}`;
 };
 
 export const groupMapper = (evaluation: IEvaluation): ReactElement | string => {
   return evaluation.group.name;
+};
+
+export const mapDeadline = <T extends IEvaluation>(evaluations: T[]): T[] => {
+  return evaluations.map((evaluation) => ({
+    ...evaluation,
+    deadline: new Date(evaluation.deadline),
+  }));
 };

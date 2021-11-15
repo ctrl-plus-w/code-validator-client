@@ -21,6 +21,7 @@
       "@component/*": ["components/*"],
       "@constant/*": ["constants/*"],
       "@helper/*": ["helpers/*"],
+      "@graphql/*": ["graphql"],
       "@style/*": ["styles/*"],
       "@util/*": ["utils/*"],
       "@hook/*": ["hooks/*"]
