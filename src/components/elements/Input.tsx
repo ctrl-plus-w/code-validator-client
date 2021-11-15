@@ -111,6 +111,8 @@ const Input = ({
           <button
             className="absolute right-0 top-0 flex items-center justify-center h-full px-3.5 text-gray-900 hover:text-primary transition-all duration-300"
             onClick={onIconClick}
+            type="button"
+            tabIndex={-1}
           >
             {icon}
           </button>
