@@ -54,6 +54,32 @@ export const isEmpty = (str: string): boolean => {
 };
 
 /**
+ * Transform a string into its slug
+ * @param str The string to slugify
+ * @returns The slugifyied string
+ */
+export const slugify = (_str: string): string => {
+  let str = _str;
+
+  str = str.replace(/^\s+|\s+$/g, ''); // Trim
+  str = str.toLowerCase();
+
+  // Remove accents, swap ñ for n, etc
+  const from = 'àáäâèéëêìíïîòóöôùúüûñç·/_,:;';
+  const to = 'aaaaeeeeiiiioooouuuunc------';
+  for (let i = 0, l = from.length; i < l; i += 1) {
+    str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
+  }
+
+  str = str
+    .replace(/[^a-z0-9 -]/g, '') // Remove invalid chars
+    .replace(/\s+/g, '-') // Collapse whitespace and replace by -
+    .replace(/-+/g, '-'); // Collapse dashes
+
+  return str;
+};
+
+/**
  * Capitalize the string
  * @param str The string to capitalize
  * @returns A string

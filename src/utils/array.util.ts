@@ -20,6 +20,19 @@ export const bothIncludes = <T>(a: T[], b: T[], element: T): boolean => {
 };
 
 /**
+ * Check if an evaluation with the given slug exists.
+ * @param evaluations The evaluations to check.
+ * @param slug The slug of the evaluation.
+ * @returns A boolean
+ */
+export const evaluationsIncludesSlug = (
+  evaluations: IEvaluation[] | { slug: string }[],
+  slug: string,
+): boolean => {
+  return evaluations.some((evaluation) => evaluation.slug === slug);
+};
+
+/**
  * Generate an array of n size.
  * @param size The expected size of the array.
  * @param element The element to fill the array with.
