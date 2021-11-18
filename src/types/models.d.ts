@@ -24,6 +24,7 @@ interface IEvaluationUser extends IUser {
 
 interface IEvaluation {
   title: string;
+  slug: string;
   subject: string;
   deadline: Date;
   group: {
@@ -41,4 +42,15 @@ interface IProfessorEvaluation extends IEvaluation {
 
 interface IStudentEvaluation extends IEvaluation {
   infos: IEvaluationUser;
+}
+
+interface IGroup {
+  id: number;
+  name: string;
+  slug: string;
+
+  users?: IUser[];
+
+  createdAt: Date;
+  updatedAt: Date;
 }

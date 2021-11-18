@@ -1,5 +1,4 @@
-import { gql, useLazyQuery } from '@apollo/client';
-import { useEffect } from 'react';
+import { useLazyQuery } from '@apollo/client';
 
 import type { NextPage } from 'next';
 
@@ -21,56 +20,27 @@ import {
   professorDeadlineMapper,
 } from '@helper/table.helper';
 
-const EVALUATIONS = gql`
-  query {
-    evaluations {
-      id
-      title
-      slug
-      subject
-      group {
-        name
-      }
-      deadline
-      answers {
-        content
-        corrected
-      }
-      totalUsers
-      completedUsers
-    }
-  }
-`;
+import { getAuthOptions } from '@util/graphql.utils';
+
+import { getEvaluations } from '@schema/evaluation';
 
 const Home: NextPage = () => {
-  const { loading: authLoading, loggedIn, token } = useAuthentication();
+  const [queryEvaluations, { data: evaluationsData, loading: evaluationsLoading }] =
+    useLazyQuery(getEvaluations);
 
-  const [queryEvaluations, { data: evaluationsData, loading: evaluationsLoading }] = useLazyQuery(
-    EVALUATIONS,
-    { context: { headers: { authorization: `Bearer ${token}` } } },
-  );
+  const { loading: authLoading, loggedIn } = useAuthentication(async (token) => {
+    queryEvaluations(getAuthOptions(token));
+  });
 
-  const [loading, endGlobalLoading] = useLoading(authLoading, evaluationsLoading);
+  const [loading] = useLoading([evaluationsData], authLoading, evaluationsLoading);
 
-  // Fetcht the evaluations when the authentication is done
-  useEffect(() => {
-    if (authLoading || !loggedIn) return;
-
-    queryEvaluations();
-  }, [queryEvaluations, authLoading, loggedIn]);
-
-  // Set the global loading state to false when the data is loaded
-  useEffect(() => {
-    if (evaluationsData) endGlobalLoading();
-  }, [evaluationsData, endGlobalLoading]);
+  if (!authLoading && !loggedIn) {
+    Router.push('/');
+    return <></>;
+  }
 
   if (loading) {
     return <>Loading...</>;
-  }
-
-  if (!loggedIn) {
-    Router.push('/');
-    return <></>;
   }
 
   return (

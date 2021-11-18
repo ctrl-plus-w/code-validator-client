@@ -44,7 +44,9 @@ const VALIDATE_TOKEN = gql`
   }
 `;
 
-const useAuthentication = (): IReturnProperties => {
+const useAuthentication = (
+  cb: (token: string) => Promise<void> = () => new Promise((r) => r()),
+): IReturnProperties => {
   const [token, setToken] = useState('');
   const [username, setUsername] = useState('');
   const [role, setRole] = useState('');
@@ -84,6 +86,8 @@ const useAuthentication = (): IReturnProperties => {
           setFirstName(fetchedFirstName);
           setLastName(fetchedLastName);
           setRole(fetchedRole.slug);
+
+          await cb(tokenCookie);
         } catch (_) {
           setLoggedIn(false);
         }

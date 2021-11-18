@@ -1,4 +1,8 @@
+import { useLazyQuery } from '@apollo/client';
+
 import type { NextPage } from 'next';
+
+import Router from 'next/router';
 
 import ProfessorLayout from '@layout/ProfessorLayout';
 
@@ -8,19 +12,46 @@ import TagsInput from '@element/TagsInput';
 import Title from '@element/Title';
 import Link from '@element/Link';
 
+import useAuthentication from '@hook/useAuthentication';
+import useLoading from '@hook/useLoading';
 import useArray from '@hook/useArray';
 
-import { professorDeadlineMapper, evaluationMapper, groupMapper } from '@helper/table.helper';
+import {
+  professorDeadlineMapper,
+  evaluationMapper,
+  groupMapper,
+  mapDeadline,
+} from '@helper/table.helper';
 import { mapSearchField, validSearchField } from '@helper/form.helper';
 
-import { professorEvaluations } from '@constant/evaluations';
+import { getAuthOptions } from '@util/graphql.utils';
+
+import { getEvaluations } from '@schema/evaluation';
 
 const Evaluations: NextPage = () => {
+  const [queryEvaluations, { data: evaluationsData, loading: evaluationsLoading }] =
+    useLazyQuery<{ evaluations: IProfessorEvaluation[] }>(getEvaluations);
+
+  const { loading: authLoading, loggedIn } = useAuthentication(async (token) => {
+    queryEvaluations(getAuthOptions(token));
+  });
+
+  const [loading] = useLoading([evaluationsData], authLoading, evaluationsLoading);
+
   const {
     values: searchFields,
     addValue: addSearchField,
     removeValue: removeSearchField,
   } = useArray<string>([]);
+
+  if (!authLoading && !loggedIn) {
+    Router.push('/');
+    return <></>;
+  }
+
+  if (loading) {
+    return <>Loading...</>;
+  }
 
   return (
     <ProfessorLayout className="flex flex-col items-start">
@@ -44,7 +75,7 @@ const Evaluations: NextPage = () => {
 
       <Table<IProfessorEvaluation>
         className="mt-8 w-full"
-        data={professorEvaluations}
+        data={mapDeadline(evaluationsData!.evaluations)}
         config={[
           { name: 'Évaluation', mapper: evaluationMapper },
           { name: 'Pour le', mapper: professorDeadlineMapper },
