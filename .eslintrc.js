@@ -56,6 +56,8 @@ module.exports = {
     'import/extensions': 'off',
 
     'linebreak-style': [2, 'unix'],
+
+    '@typescript-eslint/no-non-null-assertion': 'off',
   },
   overrides: [
     {
