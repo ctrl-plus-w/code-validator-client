@@ -58,6 +58,8 @@ module.exports = {
     'linebreak-style': [2, 'unix'],
 
     '@typescript-eslint/no-non-null-assertion': 'off',
+
+    indent: 'off',
   },
   overrides: [
     {
