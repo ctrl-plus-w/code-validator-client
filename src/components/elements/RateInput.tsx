@@ -38,29 +38,29 @@ const RateInput = ({ value, setValue, className, max, label }: IProps): ReactEle
         </p>
       )}
 
-      <div
-        className="flex gap-1 cursor-pointer"
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-      >
-        {generateArray(max, 1).map((_, index) => (
-          <button
-            className="flex items-center justify-center w-6 h-6 -ml-1"
-            key={uuidv4()}
-            onMouseEnter={() => setTempValue(index + 1)}
-            onClick={() => setValue(index + 1)}
-          >
-            {(hover ? index + 1 <= tempValue : index + 1 <= value) ? (
-              <StarIcon className={clsx(['w-6 h-6 text-yellow-400'])} />
-            ) : (
-              <div className="w-2 h-2 bg-gray-400 rounded-full" />
-            )}
-          </button>
-        ))}
+      <div className="flex cursor-pointer">
+        <div className="flex gap-1" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+          {generateArray(max, 1).map((_, index) => (
+            <button
+              className="flex items-center justify-center w-6 h-6 -ml-1"
+              key={uuidv4()}
+              onMouseEnter={() => setTempValue(index + 1)}
+              onClick={() => setValue(index + 1)}
+              type="button"
+            >
+              {(hover ? index + 1 <= tempValue : index + 1 <= value) ? (
+                <StarIcon className={clsx(['w-6 h-6 text-yellow-400'])} />
+              ) : (
+                <div className="w-2 h-2 bg-gray-400 rounded-full" />
+              )}
+            </button>
+          ))}
+        </div>
 
         <button
-          className="flex items-center justify-center ml-4"
+          className="flex items-center justify-center ml-3"
           onMouseEnter={() => setTempValue(value)}
+          type="button"
         >
           <XIcon className="w-5 h-5 text-red-600" onClick={() => setValue(0)} />
         </button>
