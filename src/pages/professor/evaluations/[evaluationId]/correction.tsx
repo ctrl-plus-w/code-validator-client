@@ -1,8 +1,11 @@
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { useLazyQuery } from '@apollo/client';
+import { useRouter } from 'next/router';
 
-import type { ReactElement } from 'react';
+import type { ReactElement, FormEvent } from 'react';
 
 import SyntaxHighlighter from 'react-syntax-highlighter';
+import Router from 'next/router';
 
 import { ChevronLeftIcon } from '@heroicons/react/solid';
 
@@ -17,55 +20,108 @@ import Button from '@element/Button';
 import Input from '@element/Input';
 import Title from '@element/Title';
 import Link from '@element/Link';
-import { useRouter } from 'next/router';
+
+import useAuthentication from '@hook/useAuthentication';
+import useLoading from '@hook/useLoading';
+
+import { getAuthOptions } from '@util/graphql.utils';
+import { isEmpty } from '@util/string.util';
+
+import { getAnswers, GetAnswersInput } from '@schema/answer';
 
 const Correction = (): ReactElement => {
   const router = useRouter();
-
   const { evaluationId } = router.query;
 
+  const [queryAnswers, { data: answersData, loading: answersLoading }] = useLazyQuery<
+    { answers: IAnswer[] },
+    GetAnswersInput
+  >(getAnswers);
+
+  const { loggedIn, token, loading: authLoading } = useAuthentication();
+
+  const [, setCorrectedAnswers] = useState<IAnswer[]>([]);
+  const [remainingAnswers, setRemainingAnswers] = useState<IAnswer[]>([]);
+  const [currentAnswerLoading, setCurrentAnswerLoading] = useState(true);
+
+  const [loading] = useLoading([answersData], authLoading, answersLoading, currentAnswerLoading);
+
+  const [currentAnswer, setCurrentAnswer] = useState<IAnswer | null>(null);
+
+  const [cleanliness, setCleanliness] = useState(0);
   const [elementUsage, setElementUsage] = useState(0);
-  const [cleanCode, setCleanCode] = useState(0);
+
   const [note, setNote] = useState('');
 
-  const str = `"""
-Programme principal
-On demande les nombres minimums et maximums puis on affiche les carrés
-des nombres compris
-entre eux.
-"""
-def main():
-  min_user_input = int(input('Entrez un entier : '))
-  max_user_input = int(input('Entrez un entier plus grand : '))
+  useEffect(() => {
+    if (typeof evaluationId !== 'string' || authLoading) return;
 
-  # Si le nombre le plus petit est plus grand que le plus grand, on affiche une
-  # erreur et on quitte le programme
-  if min_user_input <= max_user_input:
-    print('Ce n\\'est pas un entier plus grand !')
-    return
-  
-  # Affiche les carrés
-  # On ajoute un car la boucle va jusqu'à n - 1
-  for i in range(min_user_input, max_user_input + 1):
-    print(i ** 2, endl="")   
+    queryAnswers({
+      ...getAuthOptions(token),
+      variables: { evaluationId: parseInt(evaluationId, 10) },
+    });
+  }, [evaluationId, authLoading, token, queryAnswers]);
 
-"""
-On exécute le programme principal
-"""
-main()
-`;
+  useEffect(() => {
+    if (!answersData?.answers) return;
+
+    setCurrentAnswer(answersData.answers[0]);
+    setRemainingAnswers(answersData.answers);
+    setCurrentAnswerLoading(false);
+  }, [answersData]);
+
+  const handleSubmit = useCallback(
+    async (event: FormEvent): Promise<void> => {
+      event.preventDefault();
+
+      if (isEmpty(note)) return;
+
+      // TODO : Handle answer update
+
+      setCorrectedAnswers((prev) => (currentAnswer ? [...prev, currentAnswer] : prev));
+      setRemainingAnswers((prev) => {
+        const newRemainingAnswers = prev.filter((answer) => answer.id !== currentAnswer?.id);
+
+        if (newRemainingAnswers.length === 0) Router.push('/professor/evaluations');
+
+        setCurrentAnswer(remainingAnswers[0]);
+
+        return newRemainingAnswers;
+      });
+    },
+    [currentAnswer, note, remainingAnswers],
+  );
+
+  if (!authLoading && !loggedIn) {
+    Router.push('/');
+    return <></>;
+  }
+
+  if (!answersLoading && answersData?.answers.length === 0) {
+    return (
+      <ProfessorLayout className="flex items-center justify-center">
+        <p>Not found</p>
+      </ProfessorLayout>
+    );
+  }
+
+  if (loading) {
+    return <>Loading ...</>;
+  }
 
   return (
     <ProfessorLayout menu={false} className="flex gap-16">
-      <Container className="w-2/5 " fullVertical col>
+      <form onSubmit={handleSubmit} className="flex flex-col w-2/5 h-full">
         <Link href={`/professor/evaluations/${evaluationId}`} className="mb-8">
           <ChevronLeftIcon className="w-6 h-6" />
           Quitter le mode&nbsp;<span className="link-keyword">correction</span>
         </Link>
 
-        <Title>John Doe</Title>
+        <Title>
+          {currentAnswer?.user.firstName} {currentAnswer?.user.lastName}
+        </Title>
         <Title className="mt-2" level={3}>
-          Terminale NSI
+          {currentAnswer?.user.group?.name}
         </Title>
 
         <Container className="gap-6 mt-6" col>
@@ -79,8 +135,8 @@ main()
             />
 
             <RateInput
-              value={cleanCode}
-              setValue={setCleanCode}
+              value={cleanliness}
+              setValue={setCleanliness}
               label="Propretée du code"
               name="clean-code"
               max={5}
@@ -93,15 +149,18 @@ main()
             placeholder="Remarques sur le programme"
             value={note}
             setValue={setNote}
+            required
             textarea
           />
         </Container>
 
         <Container className="mt-auto justify-between" fullHorizontal row>
           <Button type="GHOST_PRIMARY">Évalutation précédente</Button>
-          <Button type="PRIMARY">Valider</Button>
+          <Button htmlType="submit" type="PRIMARY">
+            Valider
+          </Button>
         </Container>
-      </Container>
+      </form>
 
       <Container className="w-3/5" full>
         <SyntaxHighlighter
@@ -114,7 +173,7 @@ main()
             borderRadius: '2px',
           }}
         >
-          {str}
+          {currentAnswer?.content}
         </SyntaxHighlighter>
       </Container>
     </ProfessorLayout>

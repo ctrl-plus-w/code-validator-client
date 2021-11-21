@@ -1,6 +1,19 @@
+/* eslint no-use-before-define: ["off"] */
+
 interface IRole {
   name: string;
   slug: string;
+}
+
+interface IGroup {
+  id: number;
+  name: string;
+  slug: string;
+
+  users?: IUser[];
+
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 interface IUser {
@@ -9,6 +22,7 @@ interface IUser {
   username: string;
   gender: 'male' | 'female';
   role?: IRole;
+  group?: IGroup;
 }
 
 interface IEvaluationUser extends IUser {
@@ -56,15 +70,4 @@ interface IProfessorEvaluation extends IEvaluation {
 
 interface IStudentEvaluation extends IEvaluation {
   infos: IEvaluationUser;
-}
-
-interface IGroup {
-  id: number;
-  name: string;
-  slug: string;
-
-  users?: IUser[];
-
-  createdAt: Date;
-  updatedAt: Date;
 }
