@@ -34,10 +34,24 @@ interface IEvaluation {
   user: IUser;
 }
 
+interface IAnswer {
+  id: Int;
+  user: IUser;
+  content?: string;
+  note?: string;
+  cleanliness?: number;
+  unitTests?: number;
+  elementUsage?: number;
+  evaluation?: IEvaluation;
+  corrected: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 interface IProfessorEvaluation extends IEvaluation {
   totalUsers: number;
   completedUsers: number;
-  maxNote: number;
+  answers?: IAnswer[];
 }
 
 interface IStudentEvaluation extends IEvaluation {

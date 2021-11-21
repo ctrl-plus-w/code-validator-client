@@ -44,24 +44,15 @@ export const userMapper = (user: IUser): ReactElement | string => {
   );
 };
 
-export const statusMapper = (user: IEvaluationUser): ReactElement | string => {
+export const statusMapper = (answer: IAnswer): ReactElement | string => {
   return (
     <div className="flex items-center gap-1">
-      {user.status === 'done' && (
+      {answer.corrected ? (
         <>
           <CheckCircleIcon className="w-4 h-4 text-green-600" />
           <Text>Corrigé</Text>
         </>
-      )}
-
-      {user.status === 'waiting' && (
-        <>
-          <MinusCircleIcon className="w-4 h-4 text-yellow-500" />
-          <Text>En attente</Text>
-        </>
-      )}
-
-      {user.status === 'todo' && (
+      ) : (
         <>
           <XCircleIcon className="w-4 h-4 text-red-600" />
           <Text>A corriger</Text>
@@ -112,9 +103,21 @@ export const groupMapper = (evaluation: IEvaluation): ReactElement | string => {
   return evaluation.group.name;
 };
 
-export const mapDeadline = <T extends IEvaluation>(evaluations: T[]): T[] => {
-  return evaluations.map((evaluation) => ({
+export const mapDeadline = <T extends IEvaluation>(evaluation: T): T => {
+  return {
     ...evaluation,
     deadline: new Date(evaluation.deadline),
-  }));
+  };
+};
+
+export const mapDeadlines = <T extends IEvaluation>(evaluations: T[]): T[] => {
+  return evaluations.map(mapDeadline);
+};
+
+export const mapDates = <T extends { createdAt: Date; updatedAt: Date }>(el: T): T => {
+  return {
+    ...el,
+    createdAt: new Date(el.createdAt),
+    updatedAt: new Date(el.updatedAt),
+  };
 };

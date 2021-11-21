@@ -1,15 +1,18 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { useLazyQuery } from '@apollo/client';
 import { useRouter } from 'next/router';
 import { v4 as uuidv4 } from 'uuid';
 import { NextPage } from 'next';
 
 import type { ReactElement } from 'react';
 
+import Router from 'next/router';
 import clsx from 'clsx';
 
 import ProfessorLayout from '@layout/ProfessorLayout';
 
 import Container from '@module/Container';
+import Markdown from '@module/Markdown';
 import Table from '@module/Table';
 
 import CalendarInput from '@element/CalendarInput';
@@ -18,13 +21,16 @@ import Loader from '@element/Loader';
 import Title from '@element/Title';
 import Link from '@element/Link';
 
-import { statusMapper, userMapper } from '@helper/table.helper';
+import { mapDates, mapDeadline, statusMapper, userMapper } from '@helper/table.helper';
 
-import { formatNumber } from '@util/string.util';
+import useAuthentication from '@hook/useAuthentication';
+import useLoading from '@hook/useLoading';
+
 import { formatInputDatetime } from '@util/date.util';
+import { getAuthOptions } from '@util/graphql.utils';
+import { formatNumber } from '@util/string.util';
 
-import { professorEvaluations } from '@constant/evaluations';
-import Markdown from '@module/Markdown';
+import { getEvaluation, GetEvaluationInput } from '@schema/evaluation';
 
 // eslint-disable-next-line no-shadow
 enum SUB_MENU {
@@ -40,7 +46,7 @@ interface ISubMenuProps {
 const Subject = ({ evaluation }: ISubMenuProps): ReactElement => {
   return (
     <Container>
-      <Markdown content={evaluation.description} />
+      <Markdown content={evaluation.subject} />
     </Container>
   );
 };
@@ -66,19 +72,21 @@ const Parameters = ({ evaluation }: ISubMenuProps): ReactElement => {
 };
 
 const Students = ({ evaluation }: ISubMenuProps) => {
-  const deadLineMapper = (user: IEvaluationUser): ReactElement | string => {
+  const deadLineMapper = (answer: IAnswer): ReactElement | string => {
+    let total = 0;
+
+    const { cleanliness, elementUsage, unitTests, corrected } = answer;
+
+    if (cleanliness) total += cleanliness;
+    if (elementUsage) total += elementUsage;
+    if (unitTests) total += unitTests;
+
     return (
       <>
-        <p className="text-black">
-          {user.returned ? formatInputDatetime(user.returned, '/') : 'Non rendu'}
-        </p>
+        <p className="text-black">{formatInputDatetime(answer.createdAt, '/')}</p>
         <div className="flex items-center gap-2">
-          <Loader value={user.note || 0} max={evaluation.maxNote} />
-          <p className="text-gray-600">
-            {user.note
-              ? `${formatNumber(user.note)}/${formatNumber(evaluation.maxNote)}`
-              : `- / ${evaluation.maxNote}`}
-          </p>
+          <Loader value={total} max={15} />
+          <p className="text-gray-600">{corrected ? `${formatNumber(total)}/15}` : '- / 15'}</p>
         </div>
       </>
     );
@@ -86,32 +94,69 @@ const Students = ({ evaluation }: ISubMenuProps) => {
 
   return (
     <Container col>
-      <Table<IEvaluationUser>
-        data={evaluation.users}
-        config={[
-          { name: 'Utilisateur', mapper: userMapper },
-          { name: 'Pour le', mapper: deadLineMapper },
-          { name: 'Status', mapper: statusMapper },
-        ]}
-        hoverEffect={false}
-      />
+      {!evaluation.answers || evaluation.answers.length === 0 ? (
+        <>Aucune réponse trouvée...</>
+      ) : (
+        <Table<IAnswer>
+          data={evaluation.answers.map(mapDates) || []}
+          config={[
+            { name: 'Nom', mapper: ({ user }: IAnswer) => userMapper(user) },
+            { name: 'Pour le', mapper: deadLineMapper },
+            { name: 'Status', mapper: statusMapper },
+          ]}
+          hoverEffect={false}
+        />
+      )}
     </Container>
   );
 };
 
 const Evaluation: NextPage = () => {
   const router = useRouter();
-
   const { evaluationId } = router.query;
 
-  const [evaluation] = useState(professorEvaluations[0]);
+  const [queryEvaluation, { data: evaluationData, loading: evaluationLoading }] = useLazyQuery<
+    { evaluation: IProfessorEvaluation },
+    GetEvaluationInput
+  >(getEvaluation);
+
+  const { loggedIn, token, loading: authLoading } = useAuthentication();
+
+  const [loading] = useLoading([evaluationData], authLoading, evaluationLoading);
+
   const [subMenu, setSubMenu] = useState(SUB_MENU.SUBJECT);
+
+  useEffect(() => {
+    if (typeof evaluationId !== 'string' || authLoading) return;
+
+    queryEvaluation({
+      ...getAuthOptions(token),
+      variables: { id: parseInt(evaluationId, 10) },
+    });
+  }, [evaluationId, authLoading, token, queryEvaluation]);
+
+  if (!authLoading && !loggedIn) {
+    Router.push('/');
+    return <></>;
+  }
+
+  if (!evaluationLoading && evaluationData?.evaluation === null) {
+    return (
+      <ProfessorLayout className="flex items-center justify-center">
+        <p>Not found</p>
+      </ProfessorLayout>
+    );
+  }
+
+  if (loading) {
+    return <>Loading...</>;
+  }
 
   return (
     <ProfessorLayout className="flex flex-col">
       <Container col>
         <Container row>
-          <Title className="mr-6">{evaluation.title}</Title>
+          <Title className="mr-6">{evaluationData!.evaluation.title}</Title>
           <Button type="SUCCESS" href={`/professor/evaluations/${evaluationId}/correction`} small>
             Mode correction
           </Button>
@@ -135,9 +180,13 @@ const Evaluation: NextPage = () => {
           ))}
         </Container>
 
-        {subMenu === SUB_MENU.SUBJECT && <Subject evaluation={evaluation} />}
-        {subMenu === SUB_MENU.PARAMS && <Parameters evaluation={evaluation} />}
-        {subMenu === SUB_MENU.STUDENTS && <Students evaluation={evaluation} />}
+        {subMenu === SUB_MENU.SUBJECT && <Subject evaluation={evaluationData!.evaluation} />}
+
+        {subMenu === SUB_MENU.PARAMS && (
+          <Parameters evaluation={mapDeadline(evaluationData!.evaluation)} />
+        )}
+
+        {subMenu === SUB_MENU.STUDENTS && <Students evaluation={evaluationData!.evaluation} />}
       </Container>
     </ProfessorLayout>
   );

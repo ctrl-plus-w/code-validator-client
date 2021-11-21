@@ -29,6 +29,38 @@ export const getEvaluations = gql`
   }
 `;
 
+export interface GetEvaluationInput {
+  id: number;
+}
+
+export const getEvaluation = gql`
+  query Evaluation($id: Int!) {
+    evaluation(id: $id) {
+      id
+      title
+      slug
+      subject
+      group {
+        name
+      }
+      deadline
+      answers {
+        id
+        user {
+          firstName
+          lastName
+        }
+        content
+        corrected
+        createdAt
+        updatedAt
+      }
+      totalUsers
+      completedUsers
+    }
+  }
+`;
+
 export interface ICreateEvaluationInput {
   input: {
     title: string;

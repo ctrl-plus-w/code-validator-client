@@ -16,7 +16,7 @@ import useLoading from '@hook/useLoading';
 import {
   evaluationMapper,
   groupMapper,
-  mapDeadline,
+  mapDeadlines,
   professorDeadlineMapper,
 } from '@helper/table.helper';
 
@@ -52,7 +52,7 @@ const Home: NextPage = () => {
 
       <Table<IProfessorEvaluation>
         className="mt-8"
-        data={mapDeadline(evaluationsData.evaluations)}
+        data={mapDeadlines(evaluationsData.evaluations)}
         config={[
           { name: 'Évaluation', mapper: evaluationMapper },
           { name: 'Pour le', mapper: professorDeadlineMapper },

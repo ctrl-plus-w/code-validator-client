@@ -20,7 +20,7 @@ import {
   professorDeadlineMapper,
   evaluationMapper,
   groupMapper,
-  mapDeadline,
+  mapDeadlines,
 } from '@helper/table.helper';
 import { mapSearchField, validSearchField } from '@helper/form.helper';
 
@@ -75,7 +75,7 @@ const Evaluations: NextPage = () => {
 
       <Table<IProfessorEvaluation>
         className="mt-8 w-full"
-        data={mapDeadline(evaluationsData!.evaluations)}
+        data={mapDeadlines(evaluationsData!.evaluations)}
         config={[
           { name: 'Évaluation', mapper: evaluationMapper },
           { name: 'Pour le', mapper: professorDeadlineMapper },
