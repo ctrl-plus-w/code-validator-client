@@ -8,7 +8,6 @@ interface IRowConfig<T> {
   name: string;
 
   mapper: (data: T) => ReactElement | string;
-  onClick?: (data: T) => void;
 }
 
 interface IProps<T> {
@@ -18,10 +17,18 @@ interface IProps<T> {
 
   hoverEffect?: boolean;
 
+  onClick?: (data: T) => void;
+
   className?: string;
 }
 
-const Table = <T,>({ className, data, config, hoverEffect = true }: IProps<T>): ReactElement => {
+const Table = <T,>({
+  className,
+  data,
+  config,
+  hoverEffect = true,
+  onClick = () => null,
+}: IProps<T>): ReactElement => {
   return (
     <table className={clsx(['', className])}>
       <thead className="border-b border-gray-400">
@@ -45,9 +52,10 @@ const Table = <T,>({ className, data, config, hoverEffect = true }: IProps<T>): 
               hoverEffect &&
                 'transform hover:translate-x-4 transition-all duration-300 cursor-pointer',
             ])}
+            onClick={onClick && (() => onClick(_data))}
           >
             {config.map((column) => (
-              <td className={clsx(['py-2'])} key={uuidv4()}>
+              <td className="py-2" key={uuidv4()}>
                 {column.mapper(_data)}
               </td>
             ))}
