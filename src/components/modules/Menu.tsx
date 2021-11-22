@@ -1,13 +1,18 @@
 import { useRouter } from 'next/router';
 import { v4 as uuidv4 } from 'uuid';
+import { useState } from 'react';
 
-import { ReactElement, useState } from 'react';
+import type { ReactElement } from 'react';
 
+import Router from 'next/router';
 import Link from 'next/link';
 import clsx from 'clsx';
 
-import MENU from '@constant/menu';
 import Button from '@element/Button';
+
+import useAuthentication from '@hook/useAuthentication';
+
+import MENU from '@constant/menu';
 
 interface IProps {
   className?: string;
@@ -20,8 +25,11 @@ const Menu = ({ className, isProfessor }: IProps): ReactElement => {
 
   const [roleMenu] = useState(MENU[isProfessor ? 'professor' : 'student']);
 
-  const onLogout = (): void => {
-    // TODO : Make the logout computations.
+  const { logout } = useAuthentication();
+
+  const onLogout = async (): Promise<void> => {
+    await logout();
+    Router.push('/');
   };
 
   const isActive = (pathname: string): boolean => {
