@@ -27,6 +27,7 @@ import { mapSearchField, validSearchField } from '@helper/form.helper';
 import { getAuthOptions } from '@util/graphql.utils';
 
 import { getEvaluations } from '@schema/evaluation';
+import { useCallback } from 'react';
 
 const Evaluations: NextPage = () => {
   const [queryEvaluations, { data: evaluationsData, loading: evaluationsLoading }] =
@@ -43,6 +44,10 @@ const Evaluations: NextPage = () => {
     addValue: addSearchField,
     removeValue: removeSearchField,
   } = useArray<string>([]);
+
+  const handleClick = useCallback((data: IProfessorEvaluation) => {
+    Router.push(`/professor/evaluations/${data.id}`);
+  }, []);
 
   if (!authLoading && !loggedIn) {
     Router.push('/');
@@ -76,6 +81,7 @@ const Evaluations: NextPage = () => {
       <Table<IProfessorEvaluation>
         className="mt-8 w-full"
         data={mapDeadlines(evaluationsData!.evaluations)}
+        onClick={handleClick}
         config={[
           { name: 'Évaluation', mapper: evaluationMapper },
           { name: 'Pour le', mapper: professorDeadlineMapper },

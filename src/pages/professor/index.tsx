@@ -1,4 +1,5 @@
 import { useLazyQuery } from '@apollo/client';
+import { useCallback } from 'react';
 
 import type { NextPage } from 'next';
 
@@ -34,6 +35,10 @@ const Home: NextPage = () => {
 
   const [loading] = useLoading([evaluationsData], authLoading, evaluationsLoading);
 
+  const handleClick = useCallback((data: IProfessorEvaluation) => {
+    Router.push(`/professor/evaluations/${data.id}`);
+  }, []);
+
   if (!authLoading && !loggedIn) {
     Router.push('/');
     return <></>;
@@ -53,6 +58,7 @@ const Home: NextPage = () => {
       <Table<IProfessorEvaluation>
         className="mt-8"
         data={mapDeadlines(evaluationsData.evaluations)}
+        onClick={handleClick}
         config={[
           { name: 'Évaluation', mapper: evaluationMapper },
           { name: 'Pour le', mapper: professorDeadlineMapper },
