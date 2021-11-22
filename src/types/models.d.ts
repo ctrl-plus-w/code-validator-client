@@ -37,6 +37,7 @@ interface IEvaluationUser extends IUser {
 }
 
 interface IEvaluation {
+  id: number;
   title: string;
   slug: string;
   subject: string;
