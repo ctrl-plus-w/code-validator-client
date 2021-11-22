@@ -1,5 +1,5 @@
+import { useLazyQuery, useMutation } from '@apollo/client';
 import { useCallback, useEffect, useState } from 'react';
-import { useLazyQuery } from '@apollo/client';
 import { useRouter } from 'next/router';
 
 import type { ReactElement, FormEvent } from 'react';
@@ -27,11 +27,13 @@ import useLoading from '@hook/useLoading';
 import { getAuthOptions } from '@util/graphql.utils';
 import { isEmpty } from '@util/string.util';
 
-import { getAnswers, GetAnswersInput } from '@schema/answer';
+import { getAnswers, GetAnswersInput, updateAnswer, UpdateAnswerInput } from '@schema/answer';
 
 const Correction = (): ReactElement => {
   const router = useRouter();
   const { evaluationId } = router.query;
+
+  const [updateAnswerMutation] = useMutation<{ id: number }, UpdateAnswerInput>(updateAnswer);
 
   const [queryAnswers, { data: answersData, loading: answersLoading }] = useLazyQuery<
     { answers: IAnswer[] },
@@ -74,22 +76,46 @@ const Correction = (): ReactElement => {
     async (event: FormEvent): Promise<void> => {
       event.preventDefault();
 
-      if (isEmpty(note)) return;
+      if (isEmpty(note) || !currentAnswer) return;
 
-      // TODO : Handle answer update
+      const variables: UpdateAnswerInput = {
+        input: {
+          id: parseInt(currentAnswer.id, 10),
+          cleanliness,
+          elementUsage,
+          unitTests: 5,
+          note,
+        },
+      };
+
+      updateAnswerMutation({
+        ...getAuthOptions(token),
+        variables,
+      });
 
       setCorrectedAnswers((prev) => (currentAnswer ? [...prev, currentAnswer] : prev));
       setRemainingAnswers((prev) => {
         const newRemainingAnswers = prev.filter((answer) => answer.id !== currentAnswer?.id);
 
-        if (newRemainingAnswers.length === 0) Router.push('/professor/evaluations');
+        if (newRemainingAnswers.length === 0) Router.push(`/professor/evaluations/${evaluationId}`);
 
         setCurrentAnswer(remainingAnswers[0]);
 
         return newRemainingAnswers;
       });
     },
-    [currentAnswer, note, remainingAnswers],
+    [
+      remainingAnswers,
+      currentAnswer,
+      evaluationId,
+      elementUsage,
+      cleanliness,
+      token,
+      note,
+      updateAnswerMutation,
+      setCorrectedAnswers,
+      setRemainingAnswers,
+    ],
   );
 
   if (!authLoading && !loggedIn) {
@@ -100,7 +126,7 @@ const Correction = (): ReactElement => {
   if (!answersLoading && answersData?.answers.length === 0) {
     return (
       <ProfessorLayout className="flex items-center justify-center">
-        <p>Not found</p>
+        <p>Vous avez corrigé toutes les réponses disponibles ...</p>
       </ProfessorLayout>
     );
   }

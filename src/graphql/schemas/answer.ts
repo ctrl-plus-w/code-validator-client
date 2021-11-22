@@ -20,5 +20,23 @@ export const getAnswers = gql`
   }
 `;
 
+export interface UpdateAnswerInput {
+  input: {
+    id: number;
+    unitTests: number;
+    cleanliness: number;
+    elementUsage: number;
+    note: string;
+  };
+}
+
+export const updateAnswer = gql`
+  mutation UpdateAnswers($input: UpdateAnswerInput) {
+    updateAnswer(input: $input) {
+      id
+    }
+  }
+`;
+
 const n = null;
 export default n;
