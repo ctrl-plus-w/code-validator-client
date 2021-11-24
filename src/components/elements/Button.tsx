@@ -55,6 +55,30 @@ const Button = ({
       case 'GHOST_SUCCESS':
         return 'text-green-600 bg-white hover:text-green-500';
 
+      case 'ERROR':
+        return 'text-white bg-red-600 hover:text-red-500';
+
+      case 'GHOST_ERROR':
+        return 'text-red-600 bg-white hover:text-red-500';
+
+      case 'WARNING':
+        return 'text-white bg-orange-600 hover:bg-orange-500';
+
+      case 'OUTLINE_ERROR':
+        return 'text-red-600 bg-white border border-red-600 hover:bg-red-600 hover:text-white';
+
+      case 'GHOST_WARNING':
+        return 'text-orange-600 bg-white hover:text-orange-500';
+
+      case 'GRAY':
+        return 'text-white bg-gray-600 hover:bg-gray-500';
+
+      case 'GHOST_GRAY':
+        return 'text-gray-600 bg-white hover:text-gray-500';
+
+      case 'DARK_GRAY':
+        return 'text-white bg-dark-gray hover:bg-gray-900';
+
       default:
         return 'text-white bg-black hover:bg-gray-900';
     }

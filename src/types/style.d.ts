@@ -14,4 +14,5 @@ type ButtonType =
   | 'WARNING'
   | 'GHOST_WARNING'
   | 'ERROR'
-  | 'GHOST_ERROR';
+  | 'GHOST_ERROR'
+  | 'OUTLINE_ERROR';
