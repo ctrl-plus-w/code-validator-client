@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useState } from 'react';
-import { useLazyQuery } from '@apollo/client';
+import { FormEvent, useCallback, useEffect, useState } from 'react';
+import { useLazyQuery, useMutation } from '@apollo/client';
 import { useRouter } from 'next/router';
 import { v4 as uuidv4 } from 'uuid';
 import { NextPage } from 'next';
@@ -30,7 +30,12 @@ import { formatInputDatetime } from '@util/date.util';
 import { getAuthOptions } from '@util/graphql.utils';
 import { formatNumber } from '@util/string.util';
 
-import { getEvaluation, GetEvaluationInput } from '@schema/evaluation';
+import {
+  getEvaluation,
+  GetEvaluationInput,
+  deleteEvaluation,
+  DeleteEvaluationInput,
+} from '@schema/evaluation';
 
 // eslint-disable-next-line no-shadow
 enum SUB_MENU {
@@ -51,21 +56,53 @@ const Subject = ({ evaluation }: ISubMenuProps): ReactElement => {
   );
 };
 
-const Parameters = ({ evaluation }: ISubMenuProps): ReactElement => {
+interface IParamsSubMenuProps extends ISubMenuProps {
+  token: string;
+}
+
+const Parameters = ({ evaluation, token }: IParamsSubMenuProps): ReactElement => {
   const [deadLine, setDeadLine] = useState(evaluation.deadline);
 
-  const handleSubmit = useCallback(() => null, []);
+  const [deleteEvaluationMutation, { data: deletedAnswerData }] = useMutation<
+    { deleteEvaluation: { deleted: boolean } },
+    DeleteEvaluationInput
+  >(deleteEvaluation);
+
+  const handleSubmit = useCallback(
+    (event: FormEvent) => {
+      event.preventDefault();
+
+      const variables: DeleteEvaluationInput = { input: { id: evaluation.id } };
+      deleteEvaluationMutation({ ...getAuthOptions(token), variables });
+    },
+    [deleteEvaluationMutation, token, evaluation.id],
+  );
+
+  useEffect(() => {
+    if (deletedAnswerData && deletedAnswerData.deleteEvaluation.deleted) {
+      Router.push('/professor/evaluations');
+    }
+  }, [deletedAnswerData]);
 
   return (
     <Container>
-      <form className="flex w-full" onSubmit={handleSubmit}>
+      <form className="flex flex-col gap-8 w-full" onSubmit={handleSubmit}>
         <CalendarInput
           name="deadline"
           label="Pour le"
           className="w-64"
           value={deadLine}
           setValue={setDeadLine}
+          disabled
         />
+
+        <div className="flex flex-col gap-2 items-start">
+          <p className="text-base text-black font-medium">Supprimer</p>
+
+          <Button htmlType="submit" type="OUTLINE_ERROR" className="w-64">
+            Supprimer l&apos;évaluation
+          </Button>
+        </div>
       </form>
     </Container>
   );
@@ -183,7 +220,7 @@ const Evaluation: NextPage = () => {
         {subMenu === SUB_MENU.SUBJECT && <Subject evaluation={evaluationData!.evaluation} />}
 
         {subMenu === SUB_MENU.PARAMS && (
-          <Parameters evaluation={mapDeadline(evaluationData!.evaluation)} />
+          <Parameters evaluation={mapDeadline(evaluationData!.evaluation)} token={token} />
         )}
 
         {subMenu === SUB_MENU.STUDENTS && <Students evaluation={evaluationData!.evaluation} />}

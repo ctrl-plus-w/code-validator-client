@@ -82,5 +82,19 @@ export const createEvaluation = gql`
   }
 `;
 
+export interface DeleteEvaluationInput {
+  input: {
+    id: number;
+  };
+}
+
+export const deleteEvaluation = gql`
+  mutation DeleteEvaluation($input: DeleteInput) {
+    deleteEvaluation(input: $input) {
+      deleted
+    }
+  }
+`;
+
 const n = null;
 export default n;
