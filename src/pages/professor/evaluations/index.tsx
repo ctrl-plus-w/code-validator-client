@@ -30,11 +30,14 @@ import { getEvaluations } from '@schema/evaluation';
 import { useCallback } from 'react';
 
 const Evaluations: NextPage = () => {
-  const [queryEvaluations, { data: evaluationsData, loading: evaluationsLoading }] =
-    useLazyQuery<{ evaluations: IProfessorEvaluation[] }>(getEvaluations);
+  const [queryEvaluations, { data: evaluationsData, loading: evaluationsLoading }] = useLazyQuery<{
+    evaluations: IProfessorEvaluation[];
+  }>(getEvaluations, { fetchPolicy: 'network-only' });
 
   const { loading: authLoading, loggedIn } = useAuthentication(async (token) => {
-    queryEvaluations(getAuthOptions(token));
+    queryEvaluations({
+      ...getAuthOptions(token),
+    });
   });
 
   const [loading] = useLoading([evaluationsData], authLoading, evaluationsLoading);

@@ -26,8 +26,10 @@ import { getAuthOptions } from '@util/graphql.utils';
 import { getEvaluations } from '@schema/evaluation';
 
 const Home: NextPage = () => {
-  const [queryEvaluations, { data: evaluationsData, loading: evaluationsLoading }] =
-    useLazyQuery(getEvaluations);
+  const [queryEvaluations, { data: evaluationsData, loading: evaluationsLoading }] = useLazyQuery(
+    getEvaluations,
+    { fetchPolicy: 'network-only' },
+  );
 
   const { loading: authLoading, loggedIn } = useAuthentication(async (token) => {
     queryEvaluations(getAuthOptions(token));
