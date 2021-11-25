@@ -12,8 +12,6 @@ import useArray from '@hook/useArray';
 import { evaluationMapper, professorMapper, studentDeadlineMapper } from '@helper/table.helper';
 import { mapSearchField, validSearchField } from '@helper/form.helper';
 
-import { studentEvaluations } from '@constant/evaluations';
-
 const Evaluations: NextPage = () => {
   const {
     values: searchFields,
@@ -41,7 +39,7 @@ const Evaluations: NextPage = () => {
 
       <Table<IStudentEvaluation>
         className="mt-8 w-full"
-        data={studentEvaluations}
+        data={[]}
         config={[
           { name: 'Évaluation', mapper: evaluationMapper },
           { name: 'Pour le', mapper: studentDeadlineMapper },

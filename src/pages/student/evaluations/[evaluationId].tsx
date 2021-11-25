@@ -21,8 +21,6 @@ import Text from '@element/Text';
 
 import generateArray from '@util/array.util';
 
-import { studentEvaluations } from '@constant/evaluations';
-
 interface IAnswerProps {
   evaluation: IStudentEvaluation;
 }
@@ -121,14 +119,22 @@ const Notation: FC<INotationProps> = ({ evaluation }) => {
 };
 
 const Evaluations: NextPage = () => {
-  const [evaluation] = useState(studentEvaluations[0]);
-  const [status] = useState(evaluation.infos.status);
+  const [evaluation] = useState<IStudentEvaluation | null>(null);
+  const [status] = useState(evaluation?.infos.status);
+
+  if (!evaluation) {
+    return (
+      <StudentLayout className="flex items-center justify-center">
+        <p>Not found...</p>
+      </StudentLayout>
+    );
+  }
 
   return (
     <StudentLayout className="flex flex-col items-start pb-12">
       <Heading title={evaluation.title} subtitle="Répondre à l'évaluation" />
 
-      <Markdown className="mt-8" content={evaluation.description} />
+      <Markdown className="mt-8" content={evaluation.subject} />
 
       {status === 'waiting' && <AnswerForm />}
 

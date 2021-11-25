@@ -7,8 +7,6 @@ import Table from '@module/Table';
 
 import { evaluationMapper, professorMapper, studentDeadlineMapper } from '@helper/table.helper';
 
-import { studentEvaluations } from '@constant/evaluations';
-
 const Home: NextPage = () => {
   return (
     <StudentLayout className="flex flex-col">
@@ -19,7 +17,7 @@ const Home: NextPage = () => {
 
       <Table<IStudentEvaluation>
         className="mt-8"
-        data={studentEvaluations}
+        data={[]}
         config={[
           { name: 'Évaluation', mapper: evaluationMapper },
           { name: 'Pour le', mapper: studentDeadlineMapper },
