@@ -34,7 +34,7 @@ const LOGIN = gql`
 `;
 
 const Home: NextPage = () => {
-  const { login, loggedIn, loading } = useAuthentication();
+  const { login, loggedIn, loading, role } = useAuthentication();
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -58,13 +58,18 @@ const Home: NextPage = () => {
 
       await login(data.login);
 
-      Router.push(getPathFromRole(data.login.role));
+      Router.push(getPathFromRole(data.login.role.slug));
     } catch (err) {
       setError(true);
     }
   };
 
-  if (loading || loggedIn) {
+  if (loggedIn) {
+    Router.push(getPathFromRole(role));
+    return <div />;
+  }
+
+  if (loading || loggedIn !== null) {
     return <div />;
   }
 
