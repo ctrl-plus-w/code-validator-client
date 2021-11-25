@@ -34,7 +34,7 @@ const LOGIN = gql`
 `;
 
 const Home: NextPage = () => {
-  const { login, loggedIn, role, loading } = useAuthentication();
+  const { login, loggedIn, loading } = useAuthentication();
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -57,17 +57,14 @@ const Home: NextPage = () => {
       if (!data.login) return;
 
       await login(data.login);
+
       Router.push(getPathFromRole(data.login.role));
     } catch (err) {
       setError(true);
     }
   };
 
-  useEffect(() => {
-    Router.push(getPathFromRole(role));
-  }, [role, loggedIn]);
-
-  if (loading) {
+  if (loading || loggedIn) {
     return <div />;
   }
 
