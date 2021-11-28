@@ -11,6 +11,9 @@ import Table from '@module/Table';
 
 import Title from '@element/Title';
 
+import TitleSkeleton from '@skeleton/TitleSkeleton';
+import TableSkeleton from '@skeleton/TableSkeleton';
+
 import useAuthentication from '@hook/useAuthentication';
 import useLoading from '@hook/useLoading';
 
@@ -51,7 +54,14 @@ const Home: NextPage = () => {
   }
 
   if (loading) {
-    return <>Loading...</>;
+    return (
+      <ProfessorLayout className="flex flex-col" skeleton>
+        <TitleSkeleton className="w-32" />
+        <TitleSkeleton className="w-24 mt-2" level={3} />
+
+        <TableSkeleton columns={3} className="mt-8" />
+      </ProfessorLayout>
+    );
   }
 
   return (
