@@ -26,6 +26,9 @@ export const getEvaluations = gql`
       answers {
         content
         corrected
+        cleanliness
+        elementUsage
+        unitTests
       }
       totalUsers
       completedUsers
@@ -56,8 +59,12 @@ export const getEvaluation = gql`
         }
         content
         corrected
+        cleanliness
+        elementUsage
+        unitTests
         createdAt
         updatedAt
+        note
       }
       totalUsers
       completedUsers
