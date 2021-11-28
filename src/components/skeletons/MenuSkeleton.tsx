@@ -51,7 +51,7 @@ const MenuSkeleton = ({ className, isProfessor }: IProps): ReactElement => {
       <div className="flex gap-8">
         {isProfessor && <ButtonSkeleton primary className="w-24" />}
 
-        <ButtonSkeleton className="w-32" />
+        <TextSkeleton className="w-32" />
       </div>
     </nav>
   );
