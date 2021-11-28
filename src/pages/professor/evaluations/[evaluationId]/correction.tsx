@@ -20,6 +20,7 @@ import Button from '@element/Button';
 import Input from '@element/Input';
 import Title from '@element/Title';
 import Link from '@element/Link';
+import Text from '@element/Text';
 
 import useAuthentication from '@hook/useAuthentication';
 import useLoading from '@hook/useLoading';
@@ -39,6 +40,10 @@ const Correction = (): ReactElement => {
     { answers: IAnswer[] },
     GetAnswersInput
   >(getAnswers);
+
+  const getAvailableAnswers = useCallback(() => {
+    return answersData?.answers.filter((answer) => answer.corrected === false) || [];
+  }, [answersData]);
 
   const { loggedIn, token, loading: authLoading } = useAuthentication();
 
@@ -67,10 +72,12 @@ const Correction = (): ReactElement => {
   useEffect(() => {
     if (!answersData?.answers) return;
 
-    setCurrentAnswer(answersData.answers[0]);
-    setRemainingAnswers(answersData.answers);
+    const availableAnswers = getAvailableAnswers();
+
+    setCurrentAnswer(availableAnswers[0]);
+    setRemainingAnswers(availableAnswers);
     setCurrentAnswerLoading(false);
-  }, [answersData]);
+  }, [answersData, getAvailableAnswers]);
 
   const handleSubmit = useCallback(
     async (event: FormEvent): Promise<void> => {
@@ -123,10 +130,14 @@ const Correction = (): ReactElement => {
     return <></>;
   }
 
-  if (!answersLoading && answersData?.answers.length === 0) {
+  if (!answersLoading && getAvailableAnswers().length === 0) {
     return (
-      <ProfessorLayout className="flex items-center justify-center">
-        <p>Vous avez corrigé toutes les réponses disponibles ...</p>
+      <ProfessorLayout className="flex flex-col gap-6 items-center justify-center">
+        <Text type="GRAY">Vous avez corrigé toutes les réponses disponibles.</Text>
+
+        <Button href={`/professor/evaluations/${evaluationId}`} small>
+          Retour à l&apos;évaluation
+        </Button>
       </ProfessorLayout>
     );
   }
