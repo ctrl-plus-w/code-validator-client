@@ -270,7 +270,7 @@ const CreateEvaluation: NextPage = () => {
                 textarea
               />
 
-              <ButtonSkeleton primary className="w-32" />
+              <ButtonSkeleton success className="w-32" />
             </Container>
           </Container>
         </Container>
