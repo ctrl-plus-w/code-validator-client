@@ -70,5 +70,5 @@ interface IProfessorEvaluation extends IEvaluation {
 }
 
 interface IStudentEvaluation extends IEvaluation {
-  infos: IEvaluationUser;
+  answers: IAnswer[];
 }

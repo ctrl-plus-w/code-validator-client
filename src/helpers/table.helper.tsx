@@ -69,21 +69,21 @@ export const studentDeadlineMapper = (evaluation: IStudentEvaluation): ReactElem
 
       <div className="flex items-center gap-2">
         <div className="flex items-center gap-1">
-          {evaluation.infos.status === 'done' && (
+          {!!evaluation.answers.length && evaluation.answers[0].corrected && (
             <>
               <CheckCircleIcon className="w-4 h-4 text-green-600" />
               <Text>Rendu, validé</Text>
             </>
           )}
 
-          {evaluation.infos.status === 'todo' && (
+          {!!evaluation.answers.length && !evaluation.answers[0].corrected && (
             <>
               <MinusCircleIcon className="w-4 h-4 text-yellow-500" />
               <Text>Rendu, en attente</Text>
             </>
           )}
 
-          {evaluation.infos.status === 'waiting' && (
+          {evaluation.answers.length === 0 && (
             <>
               <XCircleIcon className="w-4 h-4 text-red-600" />
               <Text>Non rendu</Text>

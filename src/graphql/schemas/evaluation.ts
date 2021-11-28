@@ -18,6 +18,10 @@ export const getEvaluations = gql`
       group {
         name
       }
+      user {
+        gender
+        lastName
+      }
       deadline
       answers {
         content
