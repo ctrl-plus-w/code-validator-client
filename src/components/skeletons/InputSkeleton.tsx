@@ -9,10 +9,18 @@ interface IProps {
   maxLength?: boolean;
   textarea?: boolean;
 
+  fullHeightTextarea?: boolean;
+
   className?: string;
 }
 
-const InputSkeleton = ({ label, maxLength, className, textarea }: IProps): ReactElement => {
+const InputSkeleton = ({
+  label,
+  maxLength,
+  className,
+  textarea,
+  fullHeightTextarea,
+}: IProps): ReactElement => {
   return (
     <div className={clsx(['flex flex-col gap-2', textarea && 'pb-0.5px', className])}>
       <div className="flex justify-between items-center">
@@ -20,12 +28,20 @@ const InputSkeleton = ({ label, maxLength, className, textarea }: IProps): React
         {label && maxLength && <TextSkeleton small className="w-12" />}
       </div>
 
-      <div
-        className={clsx([
-          'w-full bg-gray-300 from-gray-600 bg-gradient-to-br to-gray-300 rounded',
-          textarea ? 'h-20' : 'h-11.5',
-        ])}
-      />
+      {textarea ? (
+        <div
+          className={clsx([
+            'w-full bg-gray-300 from-gray-600 bg-gradient-to-br to-gray-300 rounded',
+            fullHeightTextarea ? 'h-full' : 'h-20',
+          ])}
+        />
+      ) : (
+        <div
+          className={clsx([
+            'w-full bg-gray-300 h-11.5 from-gray-600 bg-gradient-to-br to-gray-300 rounded',
+          ])}
+        />
+      )}
     </div>
   );
 };
