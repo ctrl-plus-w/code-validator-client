@@ -31,7 +31,11 @@ const Home: NextPage = () => {
     { fetchPolicy: 'network-only' },
   );
 
-  const { loading: authLoading, loggedIn } = useAuthentication(async (token) => {
+  const {
+    loading: authLoading,
+    loggedIn,
+    firstName,
+  } = useAuthentication(async (token) => {
     queryEvaluations(getAuthOptions(token));
   });
 
@@ -52,7 +56,7 @@ const Home: NextPage = () => {
 
   return (
     <ProfessorLayout className="flex flex-col">
-      <Title>Bienvenue, John</Title>
+      <Title>Bienvenue, {firstName}</Title>
       <Title className="mt-2" level={3}>
         Comment allez vous ?
       </Title>
