@@ -18,6 +18,8 @@ interface IProps {
 
   className?: string;
   children?: ReactNode;
+
+  disabled?: boolean;
 }
 
 const Button = ({
@@ -26,6 +28,7 @@ const Button = ({
   href,
   type,
   small,
+  disabled,
   htmlType = 'button',
   onClick,
 }: IProps): ReactElement => {
@@ -93,7 +96,7 @@ const Button = ({
     ]);
   }, [className, small, getStyle]);
 
-  if (href) {
+  if (href && !disabled) {
     return (
       <Link href={href} passHref>
         <a href="replace" className={getClassName()} onClick={onClick}>
@@ -104,7 +107,12 @@ const Button = ({
   }
 
   return (
-    <button type={htmlType} onClick={onClick} className={getClassName()}>
+    <button
+      type={htmlType}
+      onClick={onClick}
+      className={clsx([disabled && 'opacity-50', getClassName()])}
+      disabled={disabled}
+    >
       {children}
     </button>
   );
