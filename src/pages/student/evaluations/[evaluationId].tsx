@@ -1,10 +1,12 @@
+import { useLazyQuery, useMutation } from '@apollo/client';
 import { useCallback, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import { v4 as uuidv4 } from 'uuid';
 
 import type { FormEvent, FC } from 'react';
 import type { NextPage } from 'next';
 
-import Router, { useRouter } from 'next/router';
+import Router from 'next/router';
 import clsx from 'clsx';
 
 import { StarIcon } from '@heroicons/react/solid';
@@ -20,14 +22,20 @@ import FileInput from '@element/FileInput';
 import Button from '@element/Button';
 import Text from '@element/Text';
 
-import generateArray from '@util/array.util';
+import HeadingSkeleton from '@skeleton/HeadingSkeleton';
+import ButtonSkeleton from '@skeleton/ButtonSkeleton';
+import InputSkeleton from '@skeleton/InputSkeleton';
+import TextSkeleton from '@skeleton/TextSkeleton';
+
 import useAuthentication from '@hook/useAuthentication';
 import useLoading from '@hook/useLoading';
-import { getEvaluation } from '@graphql/schemas/evaluation';
-import { useLazyQuery, useMutation } from '@apollo/client';
-import { getAuthOptions } from '@util/graphql.utils';
 import useFile from '@hook/useFile';
-import { answerEvaluation, AnswerEvaluationInput } from '@graphql/schemas/answer';
+
+import generateArray from '@util/array.util';
+import { getAuthOptions } from '@util/graphql.utils';
+
+import { answerEvaluation, AnswerEvaluationInput } from '@schema/answer';
+import { getEvaluation } from '@schema/evaluation';
 
 interface IAnswerProps {
   evaluation: IStudentEvaluation;
@@ -195,7 +203,25 @@ const Evaluations: NextPage = () => {
   }
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <StudentLayout skeleton className="flex flex-col items-start pb-12">
+        <HeadingSkeleton />
+
+        <Container className="gap-2 mt-8" col>
+          <TextSkeleton className="w-96" />
+          <TextSkeleton className="w-64" />
+          <TextSkeleton className="w-80" />
+        </Container>
+
+        <Container className="mt-16" full col>
+          <Container col fullHorizontal>
+            <InputSkeleton className="w-64" label />
+
+            <ButtonSkeleton className="w-32 mt-8" />
+          </Container>
+        </Container>
+      </StudentLayout>
+    );
   }
 
   return (
