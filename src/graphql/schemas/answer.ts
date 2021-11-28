@@ -31,8 +31,23 @@ export interface UpdateAnswerInput {
 }
 
 export const updateAnswer = gql`
-  mutation UpdateAnswers($input: UpdateAnswerInput) {
+  mutation UpdateAnswers($input: UpdateAnswerInput!) {
     updateAnswer(input: $input) {
+      id
+    }
+  }
+`;
+
+export interface AnswerEvaluationInput {
+  input: {
+    id: number;
+    content: string;
+  };
+}
+
+export const answerEvaluation = gql`
+  mutation AnswerEvaluation($input: AnswerEvaluationInput!) {
+    answer(input: $input) {
       id
     }
   }
