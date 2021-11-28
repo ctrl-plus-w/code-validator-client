@@ -21,10 +21,14 @@ import Loader from '@element/Loader';
 import Title from '@element/Title';
 import Link from '@element/Link';
 
-import { mapDates, mapDeadline, statusMapper, userMapper } from '@helper/table.helper';
+import ButtonSkeleton from '@skeleton/ButtonSkeleton';
+import TitleSkeleton from '@skeleton/TitleSkeleton';
+import TextSkeleton from '@skeleton/TextSkeleton';
 
 import useAuthentication from '@hook/useAuthentication';
 import useLoading from '@hook/useLoading';
+
+import { mapDates, mapDeadline, statusMapper, userMapper } from '@helper/table.helper';
 
 import { formatInputDatetime } from '@util/date.util';
 import { getAuthOptions } from '@util/graphql.utils';
@@ -186,7 +190,30 @@ const Evaluation: NextPage = () => {
   }
 
   if (loading) {
-    return <>Loading...</>;
+    return (
+      <ProfessorLayout skeleton className="flex flex-col">
+        <Container col>
+          <Container className="items-center" row>
+            <TitleSkeleton className="w-24 mr-6" />
+            <ButtonSkeleton className="w-32" small success />
+          </Container>
+
+          <TextSkeleton className="w-64 mt-2" />
+
+          <Container className="gap-16 mt-10 mb-6" row>
+            {Object.values(SUB_MENU).map((name) => (
+              <TextSkeleton className="w-48" primary={name === subMenu} key={uuidv4()} />
+            ))}
+          </Container>
+
+          <Container className="gap-2" col>
+            <TextSkeleton className="w-96" />
+            <TextSkeleton className="w-64" />
+            <TextSkeleton className="w-80" />
+          </Container>
+        </Container>
+      </ProfessorLayout>
+    );
   }
 
   return (
