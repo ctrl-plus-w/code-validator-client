@@ -19,6 +19,10 @@ import Title from '@element/Title';
 import Link from '@element/Link';
 import Text from '@element/Text';
 
+import ButtonSkeleton from '@skeleton/ButtonSkeleton';
+import TitleSkeleton from '@skeleton/TitleSkeleton';
+import InputSkeleton from '@skeleton/InputSkeleton';
+
 import { incrementDate, isInFuture } from '@util/date.util';
 import { evaluationsIncludesSlug } from '@util/array.util';
 import { isEmpty, slugify } from '@util/string.util';
@@ -174,10 +178,8 @@ const CreateEvaluation: NextPage = () => {
   const [groupName, setGroupName] = useState('');
   const [deadline, setDeadline] = useState(incrementDate(new Date(), 1));
 
-  const [
-    createEvaluation,
-    { data: createEvaluationData, error: createEvaluationError, loading: createEvaluationLoading },
-  ] = useMutation<ICreateEvaluationData, ICreateEvaluationInput>(createEvaluationSchema);
+  const [createEvaluation, { data: createEvaluationData, error: createEvaluationError }] =
+    useMutation<ICreateEvaluationData, ICreateEvaluationInput>(createEvaluationSchema);
 
   const [queryGroups, { data: groupsData, loading: groupsLoading }] =
     useLazyQuery<{ groups: IGroup[] }>(getGroups);
@@ -244,17 +246,40 @@ const CreateEvaluation: NextPage = () => {
   }
 
   if (loading) {
-    return <>Loading ...</>;
+    return (
+      <ProfessorLayout skeleton>
+        <Container className="pb-12" full col>
+          <Container col>
+            <TitleSkeleton className="w-64" level={3} />
+            <TitleSkeleton className="w-32 mt-2" />
+          </Container>
+
+          <Container className="mr-6 mt-8 gap-16">
+            <div className="w-64 h-9 from-green-700 bg-gradient-to-br to-green-200 rounded" />
+            <div className="w-64 h-9 from-green-700 bg-gradient-to-br to-green-200 rounded" />
+          </Container>
+
+          <Container className="mt-8" col full>
+            <Container className="items-end justify-between gap-8" full col>
+              <InputSkeleton className="w-full" label maxLength />
+              <InputSkeleton
+                className="w-full h-full"
+                label
+                maxLength
+                fullHeightTextarea
+                textarea
+              />
+
+              <ButtonSkeleton primary className="w-32" />
+            </Container>
+          </Container>
+        </Container>
+      </ProfessorLayout>
+    );
   }
 
   return (
     <ProfessorLayout>
-      {createEvaluationLoading && (
-        <Container full center className="absolute bg-white bg-opacity-40">
-          <p>Loading ...</p>
-        </Container>
-      )}
-
       <Container className="pb-12" full col>
         <Container className="gap-1" centerVertical row>
           <Link href="/professor/evaluations" className="font-semibold">
