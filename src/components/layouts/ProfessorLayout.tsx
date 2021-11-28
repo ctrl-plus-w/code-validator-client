@@ -23,7 +23,7 @@ const ProfessorLayout = ({ className, menu = true, skeleton, children }: IProps)
         <title>Professeur</title>
       </Head>
 
-      {menu && skeleton ? <MenuSkeleton isProfessor /> : <Menu isProfessor />}
+      {menu && (skeleton ? <MenuSkeleton isProfessor /> : <Menu isProfessor />)}
 
       <div className={clsx(['w-full h-full px-12', !menu && 'py-12', className])}>{children}</div>
     </div>
