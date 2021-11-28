@@ -16,6 +16,7 @@ export const getAnswers = gql`
           name
         }
       }
+      corrected
     }
   }
 `;
