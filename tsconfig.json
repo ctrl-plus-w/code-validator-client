@@ -15,14 +15,15 @@
     "jsx": "preserve",
     "baseUrl": "src",
     "paths": {
+      "@skeleton/*": ["components/skeletons/*"],
       "@element/*": ["components/elements/*"],
       "@module/*": ["components/modules/*"],
       "@layout/*": ["components/layouts/*"],
+      "@schema/*": ["graphql/schemas/*"],
       "@component/*": ["components/*"],
       "@constant/*": ["constants/*"],
       "@helper/*": ["helpers/*"],
       "@graphql/*": ["graphql/*"],
-      "@schema/*": ["graphql/schemas/*"],
       "@style/*": ["styles/*"],
       "@util/*": ["utils/*"],
       "@hook/*": ["hooks/*"]
