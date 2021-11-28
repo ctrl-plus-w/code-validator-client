@@ -123,7 +123,7 @@ const Students = ({ evaluation }: ISubMenuProps) => {
         <p className="text-black">{formatInputDatetime(answer.createdAt, '/')}</p>
         <div className="flex items-center gap-2">
           <Loader value={total} max={15} />
-          <p className="text-gray-600">{corrected ? `${formatNumber(total)}/15}` : '- / 15'}</p>
+          <p className="text-gray-600">{corrected ? `${formatNumber(total)}/15` : '- / 15'}</p>
         </div>
       </>
     );
