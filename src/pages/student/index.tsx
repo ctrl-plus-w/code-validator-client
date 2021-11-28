@@ -6,8 +6,12 @@ import Router from 'next/router';
 
 import StudentLayout from '@layout/StudentLayout';
 
-import Title from '@element/Title';
 import Table from '@module/Table';
+
+import Title from '@element/Title';
+
+import HeadingSkeleton from '@skeleton/HeadingSkeleton';
+import TableSkeleton from '@skeleton/TableSkeleton';
 
 import useAuthentication from '@hook/useAuthentication';
 import useLoading from '@hook/useLoading';
@@ -49,7 +53,13 @@ const Home: NextPage = () => {
   }
 
   if (loading) {
-    return <>Loading...</>;
+    return (
+      <StudentLayout skeleton className="flex flex-col">
+        <HeadingSkeleton />
+
+        <TableSkeleton className="mt-8" columns={3} />
+      </StudentLayout>
+    );
   }
 
   return (
