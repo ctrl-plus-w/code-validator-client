@@ -24,6 +24,8 @@ import { useLazyQuery } from '@apollo/client';
 import { getEvaluations } from '@graphql/schemas/evaluation';
 import { getAuthOptions } from '@util/graphql.utils';
 import { useCallback } from 'react';
+import HeadingSkeleton from '@skeleton/HeadingSkeleton';
+import TableSkeleton from '@skeleton/TableSkeleton';
 
 const Evaluations: NextPage = () => {
   const [queryEvaluations, { data: evaluationsdata, loading: evaluationsLoading }] =
@@ -53,7 +55,16 @@ const Evaluations: NextPage = () => {
   }
 
   if (loading) {
-    return <>Loading...</>;
+    return (
+      <StudentLayout className="flex flex-col items-start">
+        <HeadingSkeleton />
+
+        {/* TagsInput skeleton */}
+        <div className="h-10 w-full mt-8" />
+
+        <TableSkeleton className="mt-8 w-full" columns={3} />
+      </StudentLayout>
+    );
   }
 
   return (
