@@ -69,7 +69,7 @@ const Home: NextPage = () => {
     return <div />;
   }
 
-  if (loading || loggedIn !== null) {
+  if (loading) {
     return <div />;
   }
 
