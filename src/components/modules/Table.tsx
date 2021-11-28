@@ -3,6 +3,7 @@ import type { ReactElement } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 import clsx from 'clsx';
+import Text from '@element/Text';
 
 interface IRowConfig<T> {
   name: string;
@@ -20,17 +21,20 @@ interface IProps<T> {
   onClick?: (data: T) => void;
 
   className?: string;
+
+  emptyMessage?: string;
 }
 
 const Table = <T,>({
   className,
   data,
   config,
+  emptyMessage,
   hoverEffect = true,
   onClick = () => null,
 }: IProps<T>): ReactElement => {
   return (
-    <table className={clsx(['', className])}>
+    <table className={clsx([className])}>
       <thead className="border-b border-gray-400">
         <tr>
           {config.map((column) => (
@@ -61,6 +65,15 @@ const Table = <T,>({
             ))}
           </tr>
         ))}
+        {data.length === 0 && (
+          <tr>
+            <td colSpan={config.length} className="pt-32">
+              <Text type="GRAY" className="text-center">
+                {emptyMessage || 'Aucune donnée trouvée.'}
+              </Text>
+            </td>
+          </tr>
+        )}
       </tbody>
     </table>
   );
