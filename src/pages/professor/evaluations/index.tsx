@@ -1,4 +1,5 @@
 import { useLazyQuery } from '@apollo/client';
+import { useCallback } from 'react';
 
 import type { NextPage } from 'next';
 
@@ -11,6 +12,9 @@ import Table from '@module/Table';
 import TagsInput from '@element/TagsInput';
 import Title from '@element/Title';
 import Link from '@element/Link';
+
+import HeadingSkeleton from '@skeleton/HeadingSkeleton';
+import TableSkeleton from '@skeleton/TableSkeleton';
 
 import useAuthentication from '@hook/useAuthentication';
 import useLoading from '@hook/useLoading';
@@ -27,7 +31,6 @@ import { mapSearchField, validSearchField } from '@helper/form.helper';
 import { getAuthOptions } from '@util/graphql.utils';
 
 import { getEvaluations } from '@schema/evaluation';
-import { useCallback } from 'react';
 
 const Evaluations: NextPage = () => {
   const [queryEvaluations, { data: evaluationsData, loading: evaluationsLoading }] = useLazyQuery<{
@@ -58,7 +61,16 @@ const Evaluations: NextPage = () => {
   }
 
   if (loading) {
-    return <>Loading...</>;
+    return (
+      <ProfessorLayout skeleton className="flex flex-col items-start">
+        <HeadingSkeleton />
+
+        {/* TagsInput skeleton */}
+        <div className="h-10 w-full mt-8" />
+
+        <TableSkeleton className="mt-8 w-full" columns={3} />
+      </ProfessorLayout>
+    );
   }
 
   return (
