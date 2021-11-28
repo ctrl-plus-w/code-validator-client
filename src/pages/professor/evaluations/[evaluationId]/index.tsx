@@ -138,7 +138,7 @@ const Students = ({ evaluation }: ISubMenuProps) => {
           data={evaluation.answers.map(mapDates) || []}
           config={[
             { name: 'Nom', mapper: ({ user }: IAnswer) => userMapper(user) },
-            { name: 'Pour le', mapper: deadLineMapper },
+            { name: 'Rendu le', mapper: deadLineMapper },
             { name: 'Status', mapper: statusMapper },
           ]}
           hoverEffect={false}
