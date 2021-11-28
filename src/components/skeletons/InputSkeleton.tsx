@@ -1,7 +1,8 @@
 import type { ReactElement } from 'react';
 
 import clsx from 'clsx';
-import TextSkeleton from './TextSkeleton';
+
+import TextSkeleton from '@skeleton/TextSkeleton';
 
 interface IProps {
   label?: boolean;

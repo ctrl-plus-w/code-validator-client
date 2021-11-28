@@ -2,7 +2,7 @@ import type { FC } from 'react';
 
 import Container from '@module/Container';
 
-import TitleSkeleton from './TitleSkeleton';
+import TitleSkeleton from '@skeleton/TitleSkeleton';
 
 interface IProps {
   className?: string;

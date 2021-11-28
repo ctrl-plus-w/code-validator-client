@@ -6,13 +6,11 @@ import type { ReactElement } from 'react';
 
 import clsx from 'clsx';
 
-import Button from '@element/Button';
-
 import MENU from '@constant/menu';
 
 import ButtonSkeleton from '@skeleton/ButtonSkeleton';
-import TextSkeleton from '@skeleton/TextSkeleton';
 import TitleSkeleton from '@skeleton/TitleSkeleton';
+import TextSkeleton from '@skeleton/TextSkeleton';
 
 interface IProps {
   className?: string;
@@ -51,11 +49,7 @@ const MenuSkeleton = ({ className, isProfessor }: IProps): ReactElement => {
       </ul>
 
       <div className="flex gap-8">
-        {isProfessor && (
-          <Button type="PRIMARY" href={roleMenu.paths.createEvaluation.pathname}>
-            Évaluation
-          </Button>
-        )}
+        {isProfessor && <ButtonSkeleton primary className="w-24" />}
 
         <ButtonSkeleton className="w-32" />
       </div>

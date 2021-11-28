@@ -1,5 +1,6 @@
-import clsx from 'clsx';
 import type { ReactElement } from 'react';
+
+import clsx from 'clsx';
 
 interface IProps {
   small?: boolean;
