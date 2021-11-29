@@ -4,16 +4,14 @@ import { useRouter } from 'next/router';
 
 import type { ReactElement, FormEvent } from 'react';
 
-import SyntaxHighlighter from 'react-syntax-highlighter';
 import Router from 'next/router';
 
 import { ChevronLeftIcon } from '@heroicons/react/solid';
 
-import hljsTheme from '@style/hljs';
-
 import ProfessorLayout from '@layout/ProfessorLayout';
 
 import Container from '@module/Container';
+import Code from '@module/Code';
 
 import RateInput from '@element/RateInput';
 import Button from '@element/Button';
@@ -21,6 +19,12 @@ import Input from '@element/Input';
 import Title from '@element/Title';
 import Link from '@element/Link';
 import Text from '@element/Text';
+
+import RateInputSkeleton from '@skeleton/RateInputSkeleton';
+import HeadingSkeleton from '@skeleton/HeadingSkeleton';
+import ButtonSkeleton from '@skeleton/ButtonSkeleton';
+import InputSkeleton from '@skeleton/InputSkeleton';
+import TextSkeleton from '@skeleton/TextSkeleton';
 
 import useAuthentication from '@hook/useAuthentication';
 import useLoading from '@hook/useLoading';
@@ -130,6 +134,38 @@ const Correction = (): ReactElement => {
     return <></>;
   }
 
+  if (loading) {
+    return (
+      <ProfessorLayout menu={false} className="flex gap-16" skeleton>
+        <Container col fullVertical className="w-2/5">
+          <TextSkeleton className="w-48 mb-8" />
+
+          <HeadingSkeleton />
+
+          <Container className="gap-6 mt-6" col>
+            <Container className="gap-12 flex-wrap" fullHorizontal row>
+              <RateInputSkeleton label />
+              <RateInputSkeleton label />
+            </Container>
+
+            <InputSkeleton label textarea />
+          </Container>
+
+          <Container className="mt-auto justify-between" fullHorizontal row>
+            <ButtonSkeleton className="w-32" primary />
+            <ButtonSkeleton className="w-32" primary />
+          </Container>
+        </Container>
+
+        <Container className="w-3/5" full>
+          <Code language="python" customStyle={{ width: '100%' }}>
+            &nbsp;
+          </Code>
+        </Container>
+      </ProfessorLayout>
+    );
+  }
+
   if (!answersLoading && getAvailableAnswers().length === 0) {
     return (
       <ProfessorLayout className="flex flex-col gap-6 items-center justify-center">
@@ -140,10 +176,6 @@ const Correction = (): ReactElement => {
         </Button>
       </ProfessorLayout>
     );
-  }
-
-  if (loading) {
-    return <>Loading ...</>;
   }
 
   return (
@@ -200,18 +232,9 @@ const Correction = (): ReactElement => {
       </form>
 
       <Container className="w-3/5" full>
-        <SyntaxHighlighter
-          language="python"
-          style={hljsTheme}
-          customStyle={{
-            width: '100%',
-            height: '100%',
-            padding: '2rem',
-            borderRadius: '2px',
-          }}
-        >
+        <Code language="python" customStyle={{ width: '100%' }}>
           {currentAnswer?.content}
-        </SyntaxHighlighter>
+        </Code>
       </Container>
     </ProfessorLayout>
   );
