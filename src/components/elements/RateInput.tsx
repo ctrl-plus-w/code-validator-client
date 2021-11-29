@@ -39,10 +39,10 @@ const RateInput = ({ value, setValue, className, max, label }: IProps): ReactEle
       )}
 
       <div className="flex cursor-pointer">
-        <div className="flex gap-1" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+        <div className="flex" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
           {generateArray(max, 1).map((_, index) => (
             <button
-              className="flex items-center justify-center w-6 h-6 -ml-1"
+              className="flex items-center justify-center w-6 h-6"
               key={uuidv4()}
               onMouseEnter={() => setTempValue(index + 1)}
               onClick={() => setValue(index + 1)}
