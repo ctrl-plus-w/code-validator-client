@@ -1,7 +1,11 @@
 import { ApolloClient, InMemoryCache } from '@apollo/client';
 
+const { NEXT_PUBLIC_SERVER_URI } = process.env;
+
+if (!NEXT_PUBLIC_SERVER_URI) throw new Error('Server uri not defined');
+
 const client = new ApolloClient({
-  uri: 'http://localhost:8080/graphql',
+  uri: `${NEXT_PUBLIC_SERVER_URI}/graphql`,
   cache: new InMemoryCache(),
 });
 
