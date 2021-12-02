@@ -8,6 +8,8 @@ interface IProps extends IDefaultInputProps {
   value: File | null;
   setValue: Dispatch<SetStateAction<File | null>>;
 
+  extentions?: string[];
+
   required?: boolean;
 
   placeholder?: string;
@@ -19,6 +21,7 @@ const FileInput: FC<IProps> = ({
   name,
   value,
   setValue,
+  extentions = [],
   className,
   disabled,
   label,
@@ -30,7 +33,7 @@ const FileInput: FC<IProps> = ({
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { files } = event.target;
 
-    if (files && files[0]) {
+    if (files && files[0] && extentions.includes(files[0].name.split('.').pop() || '')) {
       setValue(files[0]);
     }
   };
@@ -60,6 +63,7 @@ const FileInput: FC<IProps> = ({
         ref={inputRef}
         onChange={handleChange}
         className="hidden"
+        accept={extentions?.map((e) => `.${e}`).join(',')}
       />
     </label>
   );

@@ -89,6 +89,7 @@ const AnswerForm: FC<IAnswerFormProps> = ({ evaluation, token }) => {
           value={file}
           setValue={setFile}
           className="w-72 mb-8"
+          extentions={['py']}
           required
         />
 
