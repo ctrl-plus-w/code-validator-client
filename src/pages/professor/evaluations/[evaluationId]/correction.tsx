@@ -1,5 +1,5 @@
 import { useLazyQuery, useMutation } from '@apollo/client';
-import { useCallback, useEffect, useState } from 'react';
+import { createRef, useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 
 import type { ReactElement, FormEvent } from 'react';
@@ -52,6 +52,8 @@ const Correction = (): ReactElement => {
 
   const { loggedIn, token, loading: authLoading } = useAuthentication();
 
+  const noteInputRef = createRef<HTMLTextAreaElement>();
+
   const [, setCorrectedAnswers] = useState<IAnswer[]>([]);
   const [remainingAnswers, setRemainingAnswers] = useState<IAnswer[]>([]);
   const [currentAnswerLoading, setCurrentAnswerLoading] = useState(true);
@@ -67,9 +69,21 @@ const Correction = (): ReactElement => {
 
   const [fontSize, setFontSize] = useState(1);
 
-  useKeypress('+', () => setFontSize((prev) => prev + 0.1));
-  useKeypress('-', () => setFontSize((prev) => prev - 0.1));
-  useKeypress('=', () => setFontSize(() => 1));
+  const isKeypressInNoteInput = useCallback(
+    (event: KeyboardEvent) => {
+      const target = event.target as HTMLTextAreaElement;
+      const { current } = noteInputRef;
+
+      if (!current) return false;
+
+      return !(current !== target && !current.contains(target));
+    },
+    [noteInputRef],
+  );
+
+  useKeypress('+', (event) => !isKeypressInNoteInput(event) && setFontSize((prev) => prev + 0.1));
+  useKeypress('-', (event) => !isKeypressInNoteInput(event) && setFontSize((prev) => prev - 0.1));
+  useKeypress('=', (event) => !isKeypressInNoteInput(event) && setFontSize(() => 1));
 
   useEffect(() => {
     if (typeof evaluationId !== 'string' || authLoading) return;
@@ -225,6 +239,7 @@ const Correction = (): ReactElement => {
             placeholder="Remarques sur le programme"
             value={note}
             setValue={setNote}
+            textareaRef={noteInputRef}
             required
             textarea
           />
