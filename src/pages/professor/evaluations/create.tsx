@@ -144,13 +144,18 @@ const ParametersStep: FC<IParametersStepProps> = ({
 
   return (
     <Container className="items-start gap-8" full col>
-      <CalendarInput
-        label="Date limite"
-        name="deadline"
-        value={deadline}
-        setValue={setDeadline}
-        className="w-64"
-      />
+      <Container className="gap-1" col>
+        <CalendarInput
+          label="Date limite"
+          name="deadline"
+          value={deadline}
+          setValue={setDeadline}
+          className="w-64"
+          valid={isInFuture(deadline)}
+        />
+
+        <small className="italic text-gray-600">La date doit être après aujourd&apos;hui.</small>
+      </Container>
 
       <SearchInput
         value={group}
