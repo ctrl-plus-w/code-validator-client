@@ -159,7 +159,9 @@ const Evaluation: NextPage = () => {
   const [queryEvaluation, { data: evaluationData, loading: evaluationLoading }] = useLazyQuery<
     { evaluation: IProfessorEvaluation },
     GetEvaluationInput
-  >(getEvaluation);
+  >(getEvaluation, {
+    fetchPolicy: 'network-only',
+  });
 
   const { loggedIn, token, loading: authLoading } = useAuthentication();
 
