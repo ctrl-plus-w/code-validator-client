@@ -283,12 +283,12 @@ export const isSameDateTime = (date: Date, date1: Date): boolean => {
 };
 
 /**
- * Format the date to the yyyy-mm-dd
+ * Format the date to the yyyy-mm-dd (mm: 1-12, dd: 1-31)
  * @param date The date to format
  * @returns A string
  */
 export const formatInputDate = (date: Date, link = '-'): string => {
-  const dates = [date.getFullYear(), date.getMonth(), date.getDate()];
+  const dates = [date.getFullYear(), date.getMonth() + 1, date.getDate()];
   return dates.map(formatNumber).join(link);
 };
 
