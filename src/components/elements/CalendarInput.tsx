@@ -13,6 +13,8 @@ interface IProps extends IDefaultInputProps {
   placeholder?: string;
 
   className?: string;
+
+  valid?: boolean;
 }
 
 const CalendarInput = ({
@@ -24,6 +26,7 @@ const CalendarInput = ({
   required,
   disabled,
   label,
+  valid,
 }: IProps): ReactElement => {
   const getDateFromValue = (val: string): Date => {
     const [year, month, date] = val.split('-');
@@ -46,7 +49,7 @@ const CalendarInput = ({
         value={formatInputDate(value)}
         onChange={(e) => setValue(getDateFromValue(e.target.value))}
         disabled={disabled}
-        className="form-control"
+        className={clsx(['form-control', valid === false && 'invalid'])}
       />
     </label>
   );
