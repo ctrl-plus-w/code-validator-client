@@ -231,7 +231,7 @@ const Correction = (): ReactElement => {
         </Container>
       </form>
 
-      <Container className="w-3/5" full>
+      <Container className="w-3/5 overflow-hidden" full>
         <Code language="python" customStyle={{ width: '100%' }}>
           {currentAnswer?.content}
         </Code>

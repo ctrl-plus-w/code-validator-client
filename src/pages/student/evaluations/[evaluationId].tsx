@@ -43,12 +43,10 @@ interface IAnswerProps {
 
 const Answer: FC<IAnswerProps> = ({ evaluation }) => {
   return (
-    <Container className="mt-16" col>
+    <Container className="mt-16 w-full" col>
       <Heading title="Réponse" subtitle="Voici la réponse" />
 
-      <Code language="python" customStyle={{}}>
-        {evaluation.answers[0].content}
-      </Code>
+      <Code language="python">{evaluation.answers[0].content}</Code>
     </Container>
   );
 };
