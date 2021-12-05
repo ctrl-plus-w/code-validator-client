@@ -7,6 +7,7 @@ import type {
   ReactElement,
   ReactNode,
   SetStateAction,
+  Ref,
 } from 'react';
 
 import clsx from 'clsx';
@@ -24,6 +25,9 @@ export interface IProps extends IDefaultInputProps {
   htmlType?: 'text' | 'password' | 'number' | 'tel';
   textarea?: boolean;
   fullHeightTextarea?: boolean;
+
+  inputRef?: Ref<HTMLInputElement>;
+  textareaRef?: Ref<HTMLTextAreaElement>;
 
   maxLength?: number;
   required?: boolean;
@@ -47,6 +51,8 @@ const Input = ({
   textarea,
   required,
   fullHeightTextarea,
+  textareaRef,
+  inputRef,
 }: IProps): ReactElement => {
   const handleChange = useCallback(
     (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -94,6 +100,7 @@ const Input = ({
             value={value}
             onChange={handleChange}
             disabled={disabled}
+            ref={textareaRef}
           />
         ) : (
           <input
@@ -104,6 +111,7 @@ const Input = ({
             value={value}
             onChange={handleChange}
             disabled={disabled}
+            ref={inputRef}
           />
         )}
 
