@@ -33,6 +33,7 @@ import { getAuthOptions } from '@util/graphql.utils';
 import { isEmpty } from '@util/string.util';
 
 import { getAnswers, GetAnswersInput, updateAnswer, UpdateAnswerInput } from '@schema/answer';
+import useKeypress from '@hook/useKeypress';
 
 const Correction = (): ReactElement => {
   const router = useRouter();
@@ -63,6 +64,12 @@ const Correction = (): ReactElement => {
   const [elementUsage, setElementUsage] = useState(0);
 
   const [note, setNote] = useState('');
+
+  const [fontSize, setFontSize] = useState(1);
+
+  useKeypress('+', () => setFontSize((prev) => prev + 0.1));
+  useKeypress('-', () => setFontSize((prev) => prev - 0.1));
+  useKeypress('=', () => setFontSize(() => 1));
 
   useEffect(() => {
     if (typeof evaluationId !== 'string' || authLoading) return;
@@ -232,7 +239,7 @@ const Correction = (): ReactElement => {
       </form>
 
       <Container className="w-3/5 overflow-hidden" full>
-        <Code language="python" customStyle={{ width: '100%' }}>
+        <Code language="python" customStyle={{ width: '100%', fontSize: `${fontSize}rem` }}>
           {currentAnswer?.content}
         </Code>
       </Container>
