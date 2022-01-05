@@ -6,4 +6,4 @@ Code Validator is one of the most recent project I made. Everything started, onc
 
 For the front-end I used NextJS as the framework, Typescript as the language and TailwindCSS as the styling library. On another hand, on the back-end, I made a GraphQL api using Apollo Server. Used a SQL database as Sequelize for ORM and using MariaDB or MySQL depending on the OS I was working on. There is not that much more to tell about the stack.
 
-Project made by, **Luaks Laudrain**.
+Project made by, **Lukas Laudrain**.
