@@ -76,7 +76,7 @@ const Home: NextPage = () => {
   return (
     <div className="w-full h-full flex items-center justify-center">
       <Head>
-        <title>Connection</title>
+        <title>Connexion</title>
       </Head>
 
       <form className="flex flex-col gap-4 w-96" onSubmit={handleSubmit}>
